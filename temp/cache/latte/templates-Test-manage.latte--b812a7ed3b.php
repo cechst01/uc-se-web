@@ -225,9 +225,9 @@ class Templateb812a7ed3b extends Latte\Runtime\Template
 					echo LR\Filters::escapeHtmlText($letters[$iterator->counter - 1]) /* line 99 */ ?>: </label>
                             <textarea type="text" name="<?php echo LR\Filters::escapeHtmlAttr($name) /* line 100 */ ?>[text]" id="<?php
 					echo LR\Filters::escapeHtmlAttr($id) /* line 100 */ ?>text" title="Text odpovědi" class="answerText"
-                                      ><?php echo LR\Filters::escapeHtmlText($answer['text']) /* line 101 */ ?></textarea>
+                                      ><?php echo LR\Filters::escapeHtmlText($answer[1].' ' .$answer[0]['text']) /* line 101 */ ?></textarea>
                             <input type="checkbox" name="<?php echo LR\Filters::escapeHtmlAttr($name) /* line 102 */ ?>[is_right]"<?php
-					if ($answer['is_right']==1) {
+					if ($answer[0]['is_right']==1) {
 						?>checked="true"<?php
 					}
 ?>

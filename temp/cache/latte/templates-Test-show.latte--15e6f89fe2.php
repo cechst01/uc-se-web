@@ -105,8 +105,19 @@ class Template15e6f89fe2 extends Latte\Runtime\Template
 
                     <input type='checkbox' name="<?php echo LR\Filters::escapeHtmlAttr($upper-1) /* line 28 */ ?>-<?php
 				echo LR\Filters::escapeHtmlAttr($iterator->counter) /* line 28 */ ?>">
-                    <?php echo LR\Filters::escapeHtmlText($answer['text']) /* line 29 */ ?>
+<?php
+				Tracy\Debugger::barDump(($answer), '$answer');
+				if ($answer[1]) {
+					?>                        <pre><?php echo LR\Filters::escapeHtmlText($answer[0]['text']) /* line 31 */ ?></pre>   
+<?php
+				}
+				else {
+					?>                        <?php echo LR\Filters::escapeHtmlText($answer[0]['text']) /* line 33 */ ?>
 
+<?php
+				}
+?>
+                    
                 </div>   
 <?php
 				$iterations++;
@@ -123,9 +134,9 @@ class Template15e6f89fe2 extends Latte\Runtime\Template
 		$iterator = end($this->global->its);
 ?>
 
-        <input type="hidden" name='tests_id' value="<?php echo LR\Filters::escapeHtmlAttr($test['tests_id']) /* line 36 */ ?>">
+        <input type="hidden" name='tests_id' value="<?php echo LR\Filters::escapeHtmlAttr($test['tests_id']) /* line 42 */ ?>">
     <div class="button-wrapper">
-    <?php echo end($this->global->formsStack)["send"]->getControl() /* line 38 */ ?>
+    <?php echo end($this->global->formsStack)["send"]->getControl() /* line 44 */ ?>
 
     </div>
 <?php

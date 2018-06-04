@@ -26,7 +26,13 @@
                 <div class="answer">
                     {$letters[$iterator->counter-1].') '}
                     <input type='checkbox' name="{$upper-1}-{$iterator->counter}">
-                    {$answer['text']}   
+                    {dump $answer}
+                    {if $answer[1]}
+                        <pre>{$answer[0]['text']}</pre>   
+                    {else}
+                        {$answer[0]['text']}  
+                    {/if}
+                    
                 </div>   
             {/foreach}
         </div>

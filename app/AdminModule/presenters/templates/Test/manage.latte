@@ -98,8 +98,8 @@
                             {var $id = 'frm-testForm-questionns-' . $questionCounter . '-answers-' . ($iterator->counter - 1) . '-' }
                             <label class="answerlabel" for="{$id}text">{$letters[$iterator->counter - 1]}: </label>
                             <textarea type="text" name="{$name}[text]" id="{$id}text" title="Text odpovědi" class="answerText"
-                                      >{$answer['text']}</textarea>
-                            <input type="checkbox" name="{$name}[is_right]"{if $answer['is_right']==1}checked="true"{/if}
+                                      >{$answer[1].' ' .$answer[0]['text']}</textarea>
+                            <input type="checkbox" name="{$name}[is_right]"{if $answer[0]['is_right']==1}checked="true"{/if}
                                    id="{$id}is_right" title="Označit odpověď jako správnou">
                             <label> Správná odpověď </label>
                             <button type="button" data-answerid="{$answerBoxId}"

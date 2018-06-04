@@ -172,6 +172,7 @@ class TestManager extends BaseManager
             foreach($allAnswers as $allAnswer)
             {
                 if($allAnswer['questions_id'] == $questionId){
+                    
                     $answers[] = $allAnswer;
                 }
             }
@@ -193,8 +194,14 @@ class TestManager extends BaseManager
            
            
             foreach($answers as $answer){
-                
-              $totalAnswers[] = $answer->toArray();
+              $answerArr = $answer->toArray();
+              $pre = '';
+              $original = $answerArr;
+              if(strpos($answerArr['text'],'@code') !== false){
+                  $answerArr['text'] = str_replace('@code', '', $answerArr['text']);
+                  $pre = '@code';
+              }
+              $totalAnswers[] = [$answerArr,$pre];//$answer->toArray();
             
             }
             
