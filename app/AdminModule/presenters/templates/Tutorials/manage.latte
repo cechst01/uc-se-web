@@ -1,0 +1,84 @@
+{block content}
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{var $orderNumber = ($type == 'DESC') ? 'fa fa-sort-numeric-desc' : 'fa fa-sort-numeric-asc'}
+{control breadcrumb}
+<h2 n:block="title">Administrace tutorialů</h2>
+{form tutorialsFilterForm}
+<div class="admin-table-wrapper">
+<table class="stripped-table tutorials-table">
+    <tr>
+        <th>
+            <a href="{link sortTutorials! 'name', $type}">Název</a>
+            <span n:if="$sort == name" class="order {$order}"></span>
+        </th>
+        <th>
+            <a href="{link sortTutorials! 'description', $type}">Popis</a>
+            <span n:if="$sort == description" class="order {$order}"></span>
+        </th>
+        <th>
+            <a href="{link sortTutorials! 'users.username', $type}">Autor</a>
+            <span n:if="$sort == 'users.username'" class="order {$order}"></span>
+        </th>
+        <th>Kategorie</th>
+        <th>Sekce</th>
+        <th>
+            <a href="{link sortTutorials! 'created_at', $type}">Přidáno</a>
+            <span n:if="$sort == created_at" class="order {$orderNumber}"></span>
+        </th>
+        <th>
+            <a href="{link sortTutorials! 'changed_at', $type}">Změněno</a>
+            <span n:if="$sort == changed_at" class="order {$orderNumber}"></span>
+        </th>
+        <th>Stav</th>
+        <th>Akce</th>
+    </tr>
+
+    <tr>    
+            <td>{input namesearch}</td>
+            <td>{input descriptsearch}</td>
+            <td>{input authorsearch}</td>
+            <td>{input categorySelect}</td>
+            <td>{input sectionSelect}</td>                
+            <td></td>
+            <td></td>                 
+            <td>{input hiddenSelect}</td>
+            <td>
+                <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+               <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+            </td>                       
+    </tr>
+   
+    <tbody n:snippet="tutorials"> 
+    {foreach $tutorials as $tutorial}   
+        <tr>
+            <td>{$tutorial->name}</td>
+            <td>{$tutorial->description}</td>
+            <td>{$tutorial->users->username}</td>
+            <td>{$tutorial->section->category->name}</td>
+            <td>{$tutorial->section->name}</td>
+            <td>{$tutorial->created_at|date: 'd-m-Y'}</td>
+            <td>{$tutorial->changed_at|date:'d-m-Y'}</td>
+            <td>{$tutorial->hidden|bool:'Rozpracovaný','Dokončený'}</td>
+            <td>
+                <a href="{link :Front:Tutorial:Show $tutorial->tutorials_id}" class="ico-button" title="Zobrazit">
+                    <span class="fa fa-eye"></span>
+                </a>
+                <a href="{link  Tutorial:Manage $tutorial->tutorials_id}" class="ico-button" title="Eitovat">
+                    <span class="fa fa-pencil"></span>
+                </a>
+                <a href="{link  Comments:Manage $tutorial->tutorials_id}" class="ico-button" title="Spravovat komentáře">
+                    <span class="fa fa-comments-o"></span>
+                </a>
+                <a href="{link deleteTutorial! $tutorial->tutorials_id}" class="confirm ico-button" title="Smazat">
+                    <span class="fa fa-trash-o"></span>
+                </a>                
+            </td>
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
+</div>
+{/form}
+<div class="paginationWrapper">
+{control paginator}
+</div>

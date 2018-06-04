@@ -1,0 +1,102 @@
+{block content}
+{control breadcrumb}
+<h2 n:block="title">Administrace uživatelů</h2>
+{snippet wrapper}
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{form usersFilterForm}
+    <div class="admin-table-wrapper">
+        <table class="stripped-table">
+            <tr>
+                <th>
+                    <a href="{link sortUsers! 'username', $type}" class="order-link">Uživatelské jméno</a>
+                    <span n:if="$sort == username" class="order {$order}"></span>
+                </th>
+                <th>
+                    <a href="{link sortUsers! 'email', $type}">Email</a>
+                    <span n:if="$sort == email" class="order {$order}"></span>
+                </th>
+                <th>Role</th>
+                <th>Zamčeno/Odemčeno</th>
+                <th>Změnit roli</th>
+                <th>Akce</th>
+            </tr>
+
+            <tr>
+                <td>{input namesearch}</td>
+                <td>{input emailsearch}</td>
+                <td>{input role}</td>
+                <td>{input lock}</td>
+                <td></td>
+                <td>
+                <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                </td>   
+            </tr>
+
+            <tbody n:snippet="users">
+            {foreach $users as $myuser}
+                <tr>        
+                    <td>{$myuser->username}</td>
+                    <td>{$myuser->email}</td>            
+                    <td n:snippet="$myuser->users_id">{$myuser->user_role->view_name} </td>
+                    <td>{$myuser->locked|bool:'Zamčeno','Odemčeno'}</td>
+                    <td>                
+                        <select class='changeRole' data-id="{$myuser->users_id}"
+                                {if $user->id == $myuser->users_id}
+                                    disabled=""
+                                {/if}>
+                            {foreach $roles as $key => $role}
+                                <option value="{$key}"
+                                    {if $myuser->user_role_id == $key}
+                                        selected="selected"
+                                    {/if}>
+                                    {$role}
+                                </option>
+                            {/foreach}
+                        </select>
+                    </td> 
+                    <td>
+                    {if $myuser->locked == 0}             
+                     {var $class ='fa-lock'}
+                     {var $text ='Zamčít'}
+                    {else}
+                     {var $class = 'fa-unlock-alt'} 
+                     {var $text ='Odemčít'}
+                    {/if}
+                    {if $user->id == $myuser->users_id}
+                        <div class="ico-button-disabled"><span class="fa {$class}"></span></div>
+                        <div class="ico-button-disabled"><span class="fa fa-trash-o"></span></div>
+                    {else}
+                        <a href="{link toggleLock! $myuser->users_id}" class="ico-button" title="{$text} účet">
+                            <span class="fa {$class}"></span>
+                    </a>  
+                        <a href="{link deleteUser! $myuser->users_id}" class="confirm ico-button" title="Smazat uživatele">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                    {/if}
+
+                    </td>
+                </tr>
+            {/foreach} 
+            </tbody>    
+        </table>
+    </div>
+{/form}
+{/snippet}
+<div class="paginationWrapper">
+    {control paginator}
+</div>
+<script>
+       
+    $('.changeRole').on('change',function(){
+      $.nette.ajax({
+        type: 'GET',
+        url: {link changeRole!},
+        data: {
+            'userId': $(this).data('id'),
+            'roleId': $(this).val()          
+        }
+      });
+    });   
+   
+</script>

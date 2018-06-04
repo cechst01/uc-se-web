@@ -1,0 +1,15 @@
+{block myScripts}
+    <script src="{$basePath}/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="{$basePath}/js/admin/text.js"></script>
+{/block}
+
+{block title}
+    Editace textu
+{/block}
+{block content}
+{control breadcrumb}
+    <h2>{$name}</h2>
+
+<div class="help-table">
+    {control textForm}
+</div>

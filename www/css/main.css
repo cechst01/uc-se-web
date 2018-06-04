@@ -1,0 +1,718 @@
+/* Soubor s hlavním CSS stylem */
+
+
+/*############### Obecné ###############*/
+body{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1.1em;
+    background-color:#fff;    
+    color: #474742;
+    padding: 0;
+    margin: 0;  
+}
+
+a{
+    color: inherit;
+}
+
+.right{        
+    float: right;        
+}
+
+.left{        
+    float: left;        
+}  
+
+.clear{
+    clear: both;
+} 
+
+.center{
+    text-align: center;
+    margin-top: 0;
+}
+
+.padding-5{
+    padding: 5px 0;
+}
+
+.margin-top-20{
+    margin-top: 20px;
+}
+
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+
+.inputs-200 input[type='text'], .inputs-200 textArea{
+    width: 200px;    
+}
+
+.table-space5 table{
+  border-spacing:  5px; 
+}
+
+.table-space10 table{
+  border-spacing:  10px; 
+}
+
+/* Administrace*/
+.admin-table-wrapper{
+    max-width: 100%;
+    overflow: auto;
+}
+
+.admin-table-wrapper table{
+    min-width: 80%;
+}
+
+.add{
+    display: inline-block;
+    background-color: #6DA0F7;
+    margin-bottom: 10px;
+    color: #fff;
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+/* stylovani formularu */
+
+.input{
+    box-sizing: border-box;
+    width: 250px;       
+}
+    
+textarea.input{
+    min-height: 125px;
+}
+    
+.description{
+    height: 100px;
+}
+    
+.button{
+    min-width: 100px;
+    height: 35px;
+    background-color: #6DA0F7;        
+    border: none;
+    margin: 10px 0;
+    color: #fff;
+    font-size: 1.05em;
+}
+
+.button:hover , .smallButton:hover, .ico-button:hover, .hover:hover{       
+    cursor: pointer;
+    background-color: #3d81f5;
+}
+       
+.itemInfosection{                  
+    padding: 5px 20px;
+    margin-bottom: 10px;        
+    border: 1px solid whitesmoke;
+}
+    
+.smallButton{
+    min-width: 40px;
+    /*
+    height: 25px;
+    */
+    padding: 4px 6px;
+    background-color: #6DA0F7;        
+    border: none;            
+    margin: 5px 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.ico{
+    display: inline-block;
+    margin-left: 8px;   
+}
+
+.action-button{
+    font-size: 20px;    
+}
+
+.action-button:hover{
+    color: #6DA0F7;
+    cursor: pointer;
+}
+
+.ico-button{   
+    display: inline-block;
+    background-color: #6DA0F7; 
+    color: #fff;    
+    border-radius: 3px;
+    padding: 2px 5px;
+    text-align: center;   
+    border: none;
+    font-size: 16px;
+    width: 18px;
+    margin: 4px 0 0 4px;
+    box-sizing: content-box;
+    vertical-align: bottom;
+   }
+
+.ico-button-small{
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.ico-button-disabled{
+    display: inline-block;
+    background-color: #ddd; 
+    color: #bbb;
+    padding: 2px 5px;
+    border-radius: 3px;   
+    text-align: center;  
+    border: none;
+    font-size: 16px;
+    width: 18px;
+    margin: 4px 0 0 4px; 
+}
+
+.large{
+    width: 24px;
+    font-size: 18px;
+    padding: 3px 8px;  
+}
+
+.avatar{
+    width: 110px;
+}
+
+.stripped-table{
+    border-collapse: collapse;    
+}
+.stripped-table td{
+    border: 1px solid #ddd;
+    padding: 2px 4px;
+    box-sizing: border-box;
+}
+.stripped-table th{
+   border: 1px solid #ddd;
+   background-color: #6DA0F7;
+   color: #fff;
+   padding: 5px;
+}
+
+.stripped-table input,.stripped-table select{
+    width: 97%;
+}
+
+/*############### Hlavička ###############*/
+
+/* Samotná hlavička */
+.main-header{
+    position: relative; 
+    min-height: 250px;   
+    background-color: #6DA0F7;
+    padding: 0 10px 10px 10px;
+    border: 1px solid #6DA0F7;
+    box-sizing: border-box;
+}
+
+.main-header h1{
+    color: #fff;
+    font-size: 56px;
+    text-align: center;
+    line-height: 100px;    
+    margin-top: 0;
+}
+
+.main-header h1 a{
+    text-decoration: none;
+    font-family: 'Arima Madurai';
+    font-size: 70px;
+}
+
+.main-header h1 a:hover{  
+    color: #424242;
+}
+
+/* Panel uživatele */
+
+#userBarWrapper{ 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;   
+    box-sizing: border-box;
+    padding: 10px;
+    width: 30%;
+    max-width: 300px;    
+}
+#userBarWrapper .input{
+    width: 100%;    
+}
+
+#userBarWrapper table{
+    width: 100%;    
+}
+
+#userBarWrapper, #userBarWrapper a{     
+    color: #474742;
+}
+
+#userBarWrapper .wrapper{    
+    margin-bottom: 10px;    
+}
+
+#userBarWrapper .wrapper a{    
+    display: inline-block;
+    margin: 0 1px;
+}
+
+#userBarWrapper .wrapper:last-of-type{
+    margin-bottom: 0;
+}
+
+#userBarWrapper .wrapper a:hover{
+    color: #6DA0F7;
+}
+
+/*Přihlášení*/
+
+.signWrapper .input{
+    width: 100%;
+}
+
+/*Menu*/
+
+#menu{       
+    background-color: #fff;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    font-size: 21px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+#menu ul {    
+    list-style: none;
+    padding: 0; 
+    margin: 0;
+    
+}
+
+.category {        
+    background-color: #fff;
+    position: relative;    
+    
+}
+
+.category a {    
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+   }
+
+.categories > li{
+    display: inline-block;
+    padding: 5px 15px;
+    box-sizing: border-box;
+}
+
+.category:hover{
+    color: #fff;   
+    background-color: #474742;
+    cursor: pointer;
+}
+
+.subcategories{   
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 150%;      
+    z-index: 10;   
+}
+
+.subcategories li{
+    background-color: #424242;
+    border-bottom: 1px solid #fff; 
+    color: #fff;
+    padding: 5px 8px;
+}
+
+.subcategories li:hover {
+    background-color: #6DA0F7;
+}
+
+.subcategories > li:last-of-type{
+    border: none;
+}
+
+.subcategories li a {
+    color: inherit;
+}
+
+.categories > .category > .subcategories{
+    top: 35px;
+    left: -1.5%;
+}
+
+.external-link{
+    font-size: 15px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+.fa-angle-down{   
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+}
+
+/*############### Hlavní obsah stránky ###############*/
+
+/* Samotný obsah */
+
+/* prazda sekce nebo kategorie*/
+
+.empty{
+    font-size: 40px;    
+    text-align: center;
+    color: #ccc;    
+    }
+
+.empty > .fa{
+    font-size: 80px;
+    display: inline-block;
+    margin: 0 10px;    
+}
+
+.emptyContainer{   
+    width: 100%;
+    padding: 60px 0;;
+    box-sizing: border-box;
+}
+
+.content{ 
+    position: relative;
+    padding: 10px 20px 60px 20px;
+    min-height: 500px;    
+}
+
+/* Flash zprávy */
+
+.info{ 
+   background-color: #4dc3ff;
+    color: #fff;
+}
+
+.error{
+    padding: 1px 5px;
+    background-color: #ff6666;
+    color: #fff;
+}
+
+.success{   
+    background-color: #85e085;
+    color: #fff;
+}
+
+.form-error{
+    padding: 6px 10px;
+    background-color: #ff6666;
+    color: #fff;
+    width: 50%;
+}
+.form-error li{
+    margin-left: 14px;
+}
+
+.flash{
+    padding: 15px 10px;
+    text-align: center;
+    margin: 3px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Drobečková navigace */
+
+.breadcrumb ul li{
+    display: inline-block;
+}
+    
+.breadcrumb ul li:first-of-type:before{
+    content: '';
+}
+
+.breadcrumb a:hover{
+    color: #6DA0F7;
+}
+
+.breadcrumb ul li:before{
+    content: '>';
+}
+
+/* Nápověda */
+
+.help{
+    position: absolute;
+    right: 22px;
+    top: 10px;
+    width: 40%;
+    padding: 55px 0 0 0; 
+    z-index: 15;
+}
+
+.help-text{
+    padding: 10px;    
+    background-color: #f7f7f7;
+    border: 6px solid #efefef;    
+}
+
+ .helpIco{
+    color:  #b3ccff;
+    font-size: 50px;
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+
+.helpIco:hover{
+    color: #6DA0F7;
+    cursor: pointer;
+}
+
+.hide{
+    display: none;
+}
+
+/* Sekce */
+
+.section{    
+    border-bottom: 1px solid whitesmoke;
+    margin: 10px 5px;
+    padding: 10px 10px 10px 20px;
+}
+
+.section.last{
+    border: none;
+}
+
+.section h2 {    
+    font-size: 24px;
+}
+
+.section a:hover{
+    color: #6DA0F7;
+}
+
+/* Ajax spinner */
+
+#ajax-spinner {    
+    position: fixed;
+    width: 100%;
+    height:100%;  
+    top:0;
+    left:0;
+    padding: 3px;
+    background: rgba(0,0,0,0.2) url('../images/spinner.gif') no-repeat 50% 50%;
+    z-index: 123456;
+}
+
+/* Náhled obrázku */
+
+.view{    
+    width: 130px;
+    height: 130px;
+    display: table-cell;
+    vertical-align:middle;
+    text-align: center;
+    position: relative; 
+    top: 5px;
+}
+    
+.viewimg{
+    width: 130px;
+    height: 130px;     
+    display: inline-block;
+    border: 1px solid #f7f7f7;
+}
+    
+.viewremove{               
+    background-color: #6DA0F7;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    color: #fff;
+    cursor: pointer;    
+} 
+
+.viewremove span{
+    padding: 2px;
+}
+
+.viewremove:hover{
+    background-color: #3d81f5;
+}
+
+/* Paginace */   
+    
+ul.pagination{  
+    margin: 0;
+    padding-left: 0;    
+}
+
+ul.pagination li {
+    display: inline-block;   
+    width: 32px;
+    padding: 4px 0;    
+    border: 1px solid #DDDDDD;
+    margin-left: -1px;
+    text-align: center;
+}
+
+ul.pagination li:hover {
+    background: #fAfAfA;
+}
+
+ul.pagination li.disabled {
+    color: #DDDDDD;
+}
+
+ul.pagination li.active {
+    color: #fff;
+    background: #6DA0F7;
+}
+
+ul.pagination a {
+    display: inline-block;   
+    width: 100%;
+    text-decoration: none;  
+}
+
+.paginationWrapper{
+    margin: 15px 0 5px 0;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;   
+}
+
+/*############### Patička ###############*/
+
+#main-footer{
+    width: 100%;
+    height: 50px;  
+    border-top: 2px solid whitesmoke ;
+    color: #bababa;
+   text-align: center;    
+}
+
+
+/*############### Flexibilní ###############*/
+
+@media only screen and (max-width: 850px) {
+ .main-header{ 
+        min-height: 320px;
+        padding: 0 0 10px 0;   
+ }
+ .main-header h1{
+     text-align: left;
+     margin-left: 25px;
+ }
+}
+@media only screen and (max-width: 660px) {
+    
+    .main-header{         
+        padding: 0 0 10px 0;   
+    }
+    
+    .main-header h1{  
+        font-size: 42px;
+        text-align: center;
+    }
+    
+    
+    #userBarWrapper{ 
+        position: static;   
+        margin-bottom: 10px;
+        width: 100%;    
+        max-width: none;     
+    }    
+    
+
+    #userBarWrapper .input{
+        width: 50%;
+        min-width: 150px;    
+    }
+
+    #menu{     
+        position: static;
+        padding: 0;
+    }
+
+
+    .category {        
+        background-color: #fff;
+        position: relative;    
+
+    }
+
+    .categories > li{
+        display: block;
+        padding: 10px;  
+        border-bottom: 1px solid whitesmoke;
+    }
+
+    .categories > li:last-of-type{
+        border: none;
+    }
+
+    .subcategories{  
+        top: 45px; 
+        width: 100%;
+        left: 0;   
+        border: none;
+    }
+
+    .subcategories > li{  
+        padding: 10px;     
+    }
+
+    .subcategories > li:last-of-type{
+        border: none;
+    }
+    .categories > .category > .subcategories{
+        top: 45px;
+        left: 0;  
+    }
+    .content{
+        position: static;       
+    }
+    .help{
+        top: 5px;
+        right: 8px;
+    }
+    .helpIco{
+        color: #fff;
+    }
+    .helpIco:hover{
+        color:#424242;
+    }
+    .itemInfosection table{
+        width: 100%;
+    }
+    .itemInfosection table tr{    
+        width: 100%;
+    }
+    .input{
+        width: 100%;
+    }
+    .paginationWrapper{
+      position: static;
+    }
+    
+   .admin-table-wrapper table{
+    min-width: 50%;
+}
+}

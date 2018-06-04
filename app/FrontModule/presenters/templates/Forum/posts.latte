@@ -1,0 +1,72 @@
+{block myScripts}
+     <script src="{$basePath}/tinymce/js/tinymce/tinymce.min.js"></script>
+     <script src="{$basePath}/js/front/forum-mce.js"></script>
+{/block}
+
+{block title}
+    Vlákno - {$thread->name}
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/forum.css">	
+{/block}
+
+{block content}
+
+{control breadcrumb}
+
+<div class="posts table-space10">
+    <h2 class="margin-bottom-20">{$thread->name}</h2>
+{if !$posts}
+    <div class='emptyContainer'>
+        <h2 class='empty'> <i class ='fa fa-frown-o'></i> Vlákno je bohužel prázdné.</h2>
+    </div>
+{/if}
+{foreach $posts as $post}
+{var $author = $post->users}
+{var $profile = $author->ref('profiles','users_id')}
+{var $picture = $profile->ref('pictures','pictures_id')}
+<div class='post-wrapper code-wrapper' data-url="{link :Front:Tutorial:test}">
+    <table>
+        <tr>
+            <td rowspan='2'>
+                <img src='{$basePath}/{$picture->url|nocheck}' class="avatar" alt="{$picture->alt}">
+                <h4 class='center'>{$author->username}</h4>
+            </td>
+            <td>            
+                {$post->content|noescape}            
+            </td>
+        </tr> 
+       <tr>        
+        <td>
+            Vloženo: {$post->created_at|date:'d. m. Y H.i:s'}
+            
+            {if ($user->id == $author->users_id)} 
+                <a href="{link managePost!  $post->post_id}" title='Editovat příspěvek'
+                   class='ico action-button'>
+                    <span class='fa fa-edit'></span>
+                </a> 
+                <a href="{link deletePost!  $post->post_id}" 
+                   class="confirm ico action-button" title='Smazat příspěvek'>
+                    <span class='fa fa-trash-o'></span>
+                </a>
+            {/if}
+            {if $user->isLoggedIn() && $user->id != $post->users_id}
+            <span data-re="{$author->username}"
+                  class="re fa fa-comment-o ico action-button" title='Reagovat'></span>
+            {/if}
+        </td>
+    </tr>   
+    </table>
+  </div>
+{/foreach}
+
+
+{if $thread->locked == 0 && $user->isLoggedIn()}
+    <div class="mce-form-wrapper margin-top-20">
+        {control postForm}
+    </div>
+    
+       
+{/if}
+</div>

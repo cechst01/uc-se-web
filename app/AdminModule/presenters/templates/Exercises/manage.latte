@@ -1,0 +1,75 @@
+{block content}
+{control breadcrumb}
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{var $orderNumber = ($type == 'DESC') ? 'fa fa-sort-numeric-desc' : 'fa fa-sort-numeric-asc'}
+<h2 n:block="title">Administrace cvičení</h2>
+{form exercisesFiltreForm}
+    <div class="admin-table-wrapper">
+        <table class="stripped-table">
+            <tr>
+                <th>
+                    <a href="{link sortExercises! 'name', $type}">Název</a>
+                    <span n:if="$sort == name" class="order {$order}"></span>
+                </th>
+                <th>
+                    <a href="{link sortExercises! 'users.username', $type}">Autor</a>
+                    <span n:if="$sort == 'users.username'" class="order {$order}"></span>
+                </th>
+                <th>Kategorie</th>
+                <th>Sekce</th>
+                <th>
+                    <a href="{link sortExercises! 'created_at', $type}">Přidáno</a>
+                    <span n:if="$sort == created_at" class="order {$orderNumber}"></span>
+                </th>
+                <th>
+                    <a href="{link sortExercises! 'changed_at', $type}">Změněno</a>
+                    <span n:if="$sort == changed_at" class="order {$orderNumber}"></span>
+                </th>
+                <th>Stav</th>
+                <th>Akce</th>
+            </tr>
+            <tr>  
+
+                    <td>{input namesearch}</td>
+                    <td>{input authorsearch}</td>
+                    <td>{input categorySelect}</td>
+                    <td>{input sectionSelect}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{input hiddenselect}</td>
+                    <td>
+                     <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                    <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    </td>            
+            </tr>  
+
+        <tbody n:snippet="exercises">
+            {foreach $exercises as $exercise}
+                <tr>
+                    <td>{$exercise->name}</td>
+                    <td>{$exercise->users->username}</td>
+                    <td>{$exercise->sections->category->name}</td>
+                    <td>{$exercise->sections->name}</td>
+                    <td>{$exercise->created_at|date: 'd-m-Y'}</td>
+                    <td>{$exercise->changed_at|date: 'd-m-Y'}</td>
+                    <td>{$exercise->hidden|bool:'Rozpracované', 'Dokončené'}</td>
+                    <td>
+                        <a href="{link :Front:Exercise:Show $exercise->exercises_id}" class="ico-button" title="Zobrazit">
+                            <span class="fa fa-eye"></span>
+                        </a>
+                        <a href="{link Exercise:Manage $exercise->exercises_id}" class="ico-button" title="Editovat">
+                            <span class="fa fa-pencil"></span>
+                        </a>                   
+                        <a href="{link deleteExercise! $exercise->exercises_id}" class="ico-button confirm" title="Smazat">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                    </td>            
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
+{/form}
+<div class="paginationWrapper">
+    {control paginator}
+</div>

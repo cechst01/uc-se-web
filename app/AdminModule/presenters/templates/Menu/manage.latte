@@ -1,0 +1,51 @@
+{block myScripts}
+<script src="{$basePath}/js/admin/menu.js"></script>
+{/block}
+
+{block title}
+    Administrace menu
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+<h2>Administrace menu</h2>
+{define inputs}
+<div n:class="parent, $category[category][parent_id] == 0 ? top-parent" id="{$category['category']['categories_id']}">
+    <input type="text" value="{$category['category']['name']}" placeholder="Název" title="Název položky menu"
+           name="id[{$category['category']['categories_id']}][{$category['category']['parent_id']}][name]"
+           data-nette-rules='[{"op":":filled","msg":"Musíte vyplnit název kategorie."}]'           
+    ><input
+        type="text" value="{$category['category']['url']}" placeholder="URL" title="Je možné zadat url a vytvořit tak externí odkaz"
+        name="id[{$category['category']['categories_id']}][{$category['category']['parent_id']}][url]"
+    ><button 
+        type="button" class="removeCategory ico-button" title="Odebrat">
+        <span class="fa fa-trash-o"></span>
+    </button
+    ><button
+        type="button" class="addCategory smallButton"><span class="fa fa-plus"> Přidat podkategorii</span>
+    </button>
+{/define}
+{form menuForm}
+    <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div class="admin-table-wrapper">
+    {block categ}
+        {foreach $categories  as $id => $category}
+            {if $category['subcategories']}
+                {include inputs}
+                {include categ, categories => $category['subcategories']}
+                </div>
+            {else}
+                {include inputs}
+                </div>
+            {/if}        
+        {/foreach}
+    
+    {/block}
+    <button type="button" class="smallButton" id="addCategory"><span class="fa fa-plus"> Přidat kategorii</span></button>
+    
+</div>
+{input send}    
+{/form}

@@ -1,0 +1,74 @@
+{block myScripts}    
+    <script src="{$basePath}/js/admin/section.js"></script>
+{/block}
+
+{block title}
+    Administrace sekcí
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+<h2> Administrace sekcí </h2>
+{form sectionForm}
+<ul class="form-error" n:if="$form->hasErrors()">
+    <li n:foreach="$form->errors as $error">{$error}</li>
+</ul>
+<div>
+    <button type="button" class="smallButton add-section"><span class="fa fa-plus"> Přidat sekci</span></button>
+    <input type="hidden" value="{$catJson}" id="categories">
+</div>
+{foreach $sections as $section}
+    <div id="{$section->sections_id}" class="admin-section">
+        <table>
+            <tr>
+                <td>
+                    <label>Název:</label>
+                </td>
+                <td>
+                    <input class="input"
+                        type="text" value ="{$section->name}"
+                        name="sections[{$section->sections_id}][name]"
+                        data-nette-rules='[{"op":":filled","msg":"Musíte vyplnit název sekce"}]'>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Kategorie:</label>
+                </td>
+                <td>
+                    <select name="sections[{$section->sections_id}][category_id]" class="input">
+                        {foreach $categories as $key => $category}        
+                            <option value="{$key}"
+                                {if $section->category_id == $key}
+                                    selected="selected"
+                                {/if}>
+                                {$category}
+                            </option>       
+                        {/foreach}
+                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Popis:</label>
+                </td>
+                <td>
+                    <textarea name="sections[{$section->sections_id}][description]"
+                              class="input">{$section->description}</textarea>
+                </td>                
+             </tr>         
+            <tr>
+                <td>
+                    <button type="button" class ="remove-section ico-button" title="Odebrat">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </td>
+                <td></td>
+            </tr>           
+             
+        </table>
+    </div>
+{/foreach}
+    {input send}    
+{/form}

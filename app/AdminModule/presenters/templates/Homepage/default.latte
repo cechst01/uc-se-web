@@ -1,0 +1,51 @@
+{block content}
+{control breadcrumb}
+    <h1 n:block="title"> Administrace </h1>
+    <div>
+        <div n:if="$user->isInRole(admin)" class="items-category">
+            <h2>Uživatelé:</h2>        
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Users:manage}"><span class="fa fa-user"> Administrace uživatelů </span></a>
+            </div>
+        </div>
+        <div class="items-category">
+            <h2>Obsah:</h2>        
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Tutorial:manage}"><span class="fa fa-plus"> Přidat tutorial</span></a>
+            </div>
+             <div class="admin-menu-item hover">
+                <a href="{link :Admin:Tutorials:manage}"><span class="fa fa-pencil-square-o"> Administrace tutorialů</span></a>
+            </div>
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Exercise:manage}"><span class="fa fa-plus"> Přidat cvičení</span></a>
+            </div>
+             <div class="admin-menu-item hover">
+                <a href="{link :Admin:Exercises:manage}"><span class="fa fa-pencil-square-o"> Administrace cvičení</span></a>
+            </div>
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Test:manage}"><span class="fa fa-plus"> Přidat test</span></a>
+            </div>
+             <div class="admin-menu-item hover">
+                <a href="{link :Admin:Tests:manage}"><span class="fa fa-pencil-square-o"> Administrace testů</span></a>
+            </div>
+        </div>
+        <div n:if="$user->isInRole(admin)" class="items-category">
+            <h2>Portál:</h2>
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Menu:manage}"><span class="fa fa-pencil-square-o"> Administrace menu</span></a>
+            </div>
+             <div class="admin-menu-item hover">
+                <a href="{link :Admin:Sections:manage}"><span class="fa fa-pencil-square-o"> Administrace sekcí</span></a>
+            </div>
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Text:manage}"><span class="fa fa-pencil-square-o"> Administrace textů</span></a>
+            </div>
+        </div>
+        <div n:if="$user->isInRole(admin)" class="items-category">
+            <h2>Fórum:</h2>
+            <div class="admin-menu-item hover">
+                <a href="{link :Admin:Categories:categoriesManage}"><span class="fa fa-comments-o"> Administrace fóra</span></a>
+            </div>
+        </div>
+    </div>
+

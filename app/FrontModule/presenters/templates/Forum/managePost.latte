@@ -1,0 +1,18 @@
+{block title}
+    Úprava příspěvku
+{/block}
+
+{block myScripts}
+    <script src="{$basePath}/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="{$basePath}/js/front/forum-mce.js"></script>
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/forum.css">	
+{/block}
+
+{block content}
+<h2> Úprava příspěvku</h2>
+<div class="mce-form-wrapper">
+{control postForm}
+</div>

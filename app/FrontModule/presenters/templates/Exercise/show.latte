@@ -1,0 +1,83 @@
+{block myScripts}
+    <script src="{$basePath}/codemirror/lib/codemirror.js"></script>
+    <script src="{$basePath}/codemirror/mode/javascript/javascript.js"></script>
+    <script src="{$basePath}/codemirror/mode/xml/xml.js"></script>
+    <script src="{$basePath}/codemirror/mode/css/css.js"></script>
+    <script src="{$basePath}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="{$basePath}/js/front/exercise.js"></script>
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="{$basePath}/codemirror/theme/3024-day.css">
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block title}
+    Cvičení - {$exercise->name}
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+
+<h2>{$exercise->name}</h2>
+<div id="task"> 
+    <h3> Zadání: </h3>
+<p>{$exercise->task}</p>
+</div>
+
+<div class='exercise-input-part left'>
+    <div>
+        <span class='editor-choice html-ico active'>Html</span>
+        <span class='editor-choice css-ico'>Css</span>
+        <span class='editor-choice js-ico'>JavaScript</span>
+    </div>
+    <div class="editor-wrapper" id="html-wrapper">        
+        <textarea id="html" class="editor" data-mode='htmlmixed'
+        >{$exercise->html_code}</textarea>       
+    </div>
+
+    <div class="editor-wrapper none" id="css-wrapper">
+        <textarea id="css" class="editor" data-mode='css'
+        >{$exercise->css_code}</textarea>       
+    </div>
+
+    <div class="editor-wrapper none" id="js-wrapper">
+        <textarea id="js" class="editor" data-mode='javascript'
+        >{$exercise->js_code}</textarea>        
+    </div>
+<button id="btn" class='button'>
+    Zobrazit
+</button>
+
+{if $exercise->check_code != ''}
+    
+    <button  id="chck" class='button'>
+        Zkontrolovat
+    </button> 
+    
+    <textarea class="hidden" id="check-code">{$exercise->check_code}</textarea> 
+{/if}
+
+</div>
+
+<div class="exercise-frameWrapper left">
+<iframe id="frame">
+</iframe>
+</div>
+
+<script>
+    function saveResult(){
+        $.nette.ajax({
+        type: 'GET',
+        url: {link saveResult!},
+        data: {
+            'exerciseId': {$exercise->exercises_id}                    
+        }
+      });
+    }
+</script>
+
+
+

@@ -1,0 +1,75 @@
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/forum.css">	
+{/block}
+
+{block title}
+    Kategorie fóra - {$category->name}
+{/block}
+
+{block content}
+{control breadcrumb}
+<h2 class="margin-bottom-20">{$category->name}</h2>
+{if $user->isLoggedIn()}
+    <a href="{link Forum:manageThread $categoryId}" class='add hover'><span class='fa fa-plus'> Přidat vlákno</span></a>
+{/if}
+{if $threads}
+    <table class="threads-table stripped-table">
+        <tr>
+            <th>
+                Vlákno:
+            </th>
+            <th>
+                Autor:
+            </th>
+            <th>
+                Počet příspěvků:
+            </th>
+            <th>
+                Poslední příspěvek:
+            </th>         
+        </tr>
+    {foreach $threads as $thread}
+        {var $posts = $thread->related('posts')}
+        {var $postsCount = $posts->count()}
+        {var $lastPost = $posts->max('created_at')}
+        <tr>
+            <td>
+                <h3><a href="{link Forum:posts $thread->threads_id}">{$thread->name}</a></h3>
+            </td>
+            <td>
+                {$thread->users->username}
+            </td>
+            <td>
+                {$postsCount}
+            </td>
+
+            <td>
+                {$lastPost|date:'d. m. Y H:i:s'}
+            </td>     
+            
+                {if $user->id == $thread->users_id} 
+                    <td>
+                        <a href="{link deleteThread! $thread->threads_id}" title="Smazat vlákno"
+                        class="confirm ico-button">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                        <a href="{link Forum:manageThread $categoryId, $thread->threads_id}"
+                        class='ico-button' title='Editovat vlákno'>
+                            <span class='fa fa-pencil'></span>
+                        </a> 
+                    </td> 
+                {/if}
+            
+
+       </tr>
+    {/foreach}
+    </table>
+{else}
+    <div class='emptyContainer'>
+        <h2 class='empty'> <i class ='fa fa-frown-o'></i> Kategorie je bohužel prázdná.</h2>
+    </div>
+{/if}
+<div class="paginationWrapper">
+{control pagination}
+</div>

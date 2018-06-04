@@ -1,0 +1,103 @@
+{block content}
+{control breadcrumb}
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{var $orderNumber = ($type == 'DESC') ? 'fa fa-sort-numeric-desc' : 'fa fa-sort-numeric-asc'}
+<h2 n:block="title">Administrace kategorií fóra</h2>
+{form categoriesFilterForm}
+<div class="admin-table-wrapper">
+    <a href="{link  Categories:categoryManage }" class="add">
+        <span class="fa fa-plus"> Přidat kategorii </span>
+    </a> 
+<table class="stripped-table">
+    <tr>
+        <th>
+            <a href="{link sortCategories! 'name', $type}">Název</a>
+            <span n:if="$sort == name" class="order {$order}"></span>
+        </th>
+        <th>
+            <a href="{link sortCategories! 'description', $type}">Popis</a>
+            <span n:if="$sort == description" class="order {$order}"></span>
+        </th>
+        <th>
+            <a href="{link sortCategories! 'threads_count', $type}">Počet vláken</a>
+            <span n:if="$sort == threads_count" class="order {$orderNumber}"></span>
+        </th>
+        <th>
+            <a href="{link sortCategories! 'posts_count', $type}">Počet příspěvků</a>
+            <span n:if="$sort == posts_count" class="order {$orderNumber}"></span>
+        </th>
+        <th>
+            <a href="{link sortCategories! 'last_post', $type}">Poslendí příspěvek</a>
+            <span n:if="$sort == last_post" class="order {$orderNumber}"></span>
+        </th>
+        <th>Akce</th>
+    </tr>
+
+
+    <tr>    
+            <td>{input namesearch}</td>
+            <td>{input descriptsearch}</td>
+            <td></td>
+            <td></td>           
+            <td></td> 
+            <td>
+               <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+               <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+            </td>                       
+    </tr>
+   
+    <tbody n:snippet="categories"> 
+    {foreach $categories as $category} 
+        
+       {var $threads = $category->related('threads')->fetchAll()}       
+       {var $threadsCount = count($threads)}     
+       {var $postsCount = 0}
+       {var $lastPost = '0-0-0000'}
+       
+       {foreach $threads as $thread}
+           {var $posts = $thread->related('posts')}
+           {var $threadLastPost = $posts->max('created_at')}
+           {var $lastPost = $lastPost > $threadLastPost ? $lastPost : $threadLastPost}
+           {var $postsCount = $postsCount + $posts->count()}           
+       {/foreach}  
+       
+        <tr>
+            <td>{$category->name}</td>
+            <td>{$category->description}</td>
+            <td>{$threadsCount}</td>
+            <td>{$postsCount}</td>
+            <td>
+                {if $lastPost > '1999-1-1'}
+                    {$lastPost|date:'d. m. Y H:i:s'}
+                {else}
+                 -
+                {/if}               
+            </td>            
+            <td>               
+                <a href="{link  :Front:Forum:threads $category->forum_categories_id}"
+                   class="ico-button" title="Zobrazit">
+                    <span class="fa fa-eye"></span>
+                </a>
+                 <a href="{link  Categories:categoryManage $category->forum_categories_id}"
+                   class="ico-button" title="Editovat">
+                    <span class="fa fa-pencil"></span>
+                </a> 
+                <a href="{link  deleteCategory! $category->forum_categories_id}"
+                   class="confirm ico-button" title="Smazat">
+                    <span class="fa fa-trash-o"></span>
+                </a>
+                <a href="{link  Threads:manage $category->forum_categories_id}"
+                   class="ico-button" title="Spravovat vlákna">
+                    <span class="fa fa-comments"></span>
+                </a>
+            </td>
+
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
+</div>
+{/form}
+<div class="paginationWrapper">
+    {control paginator}
+</div>

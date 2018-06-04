@@ -1,0 +1,146 @@
+{block myScripts}
+    <script src="{$basePath}/js/admin/test.js"></script>
+{/block}
+
+{block title}
+    Editace testu
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+{ifset $name}
+    <h2>Úprava testu: {$name}</h2>
+{else}
+    <h2>Vložení testu</h2>
+{/ifset}
+{snippetArea wrapper}
+{form testForm}
+    <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+ <div class="itemInfosection" data-question-img-size="{$questionMaxFileSize}">
+     <table>
+         <tr>
+             <td>{label category}</td>
+             <td>{input category}</td>             
+         </tr>
+          <tr>
+             <td>{label sections_id}</td>
+             <td>{snippet section}{input sections_id}{/snippet}</td>             
+         </tr>
+          <tr>
+             <td>{label name}</td>
+             <td>{input name}</td>             
+         </tr>
+          <tr>
+             <td>{label hidden}</td>
+             <td>{input hidden}</td>             
+         </tr>
+          <tr>
+             <td>{label points}</td>
+             <td>{input points}</td>             
+         </tr>
+         <tr>
+             <td>Aktuální obrázek:</td>
+             <td>{control picture}</td>             
+         </tr>
+          <tr>
+             <td>{label file}</td>
+             <td>{input file}</td>             
+         </tr>
+          <tr>
+             <td>{label description}</td>
+             <td>{input description}</td>             
+         </tr>
+     </table>
+ </div>  
+  <div class="questionWrapper">
+    
+    {ifset $questions}       
+       
+        {foreach $questions as $question}            
+            {var $questionCounter = $iterator->counter -1;}
+            {var $questionBoxId = $questionCounter .'-question'}
+            
+            <div id="{$questionBoxId}" class="question">
+                <h2 class="questionheading">{$questionCounter + 1}. otázka: </h2>
+                
+                <label for=frm-testForm-questions-{$questionCounter}-question">Zadání: </label>
+                <textarea name="questions[{$questionCounter}][question]"
+                        id="frm-testForm-questions-{$questionCounter}-question" 
+                        data-nette-rule='[{"op":":blank","rules":[{"op":":filled","msg":"Pokud neoznačíte test jako rozpracovaný, otázka nesmí být prázdná."}],"control":"hidden"}]'
+                        title='Text otázky' class='questionText'
+                        >{$question['question']}</textarea>
+                        
+                <button type="button" class="addRemoveQuestionEvent ico-button remove-question" data-questionid="{$questionBoxId}"
+                        title='Odebrat otázku'>
+                    <span class='fa fa-trash-o'></span>
+                </button>  
+                <input type="hidden" name="questions[{$questionCounter}][oldimage]" value="{$question[picture][pictures_id]}">
+                <div>
+                    <label>Obrázek k otázce: </label>
+                    <input type="file" name="questions[{$questionCounter}][image]" id="frm-testForm-questions-{$questionCounter}-image"
+                       data-nette-rules='[{"op":"optional"},{"op":":image","msg":"Jsou povolené pouze obrázky ve formátecj JPEG, PNG nebo GIF."},{"op":":fileSize","msg":"Maximální velikost souboru je 256 kB.","arg":262144}]'
+                       class="questionFile">
+                    {if $question[picture]}
+                    <div class="question-picture view">
+                        <img src="{$basePath}/{$question[picture][url]}" alt="{$question[picture][alt]}">
+                    </div>
+                    {/if}
+                </div>
+                <div class="answers">
+                    <h3>Odpovědi:</h3>
+                    {foreach $question['answers'] as $answer}
+                        {var $answerBoxId = $questionCounter.'-'.($iterator->counter -1) .'-answer'}                    
+                        <div id="{$answerBoxId}" class="answer">
+                            {var $name = 'questions[' . $questionCounter .']'.'[answers]['.($iterator->counter - 1).']';}
+                            {var $id = 'frm-testForm-questionns-' . $questionCounter . '-answers-' . ($iterator->counter - 1) . '-' }
+                            <label class="answerlabel" for="{$id}text">{$letters[$iterator->counter - 1]}: </label>
+                            <textarea type="text" name="{$name}[text]" id="{$id}text" title="Text odpovědi" class="answerText"
+                                      >{$answer['text']}</textarea>
+                            <input type="checkbox" name="{$name}[is_right]"{if $answer['is_right']==1}checked="true"{/if}
+                                   id="{$id}is_right" title="Označit odpověď jako správnou">
+                            <label> Správná odpověď </label>
+                            <button type="button" data-answerid="{$answerBoxId}"
+                                   class="addRemoveAnswerEvent ico-button" title="Odebrat odpověď"> 
+                                <span class='fa fa-trash-o'</span>
+                            </button>
+                        </div>
+                    {/foreach}
+                    <button type="button" class="addAnswerEvent ico-button ico-button-small" data-partname="questions[{$questionCounter}]"
+                           data-idname="frm-testForm-questions-{$questionCounter}" title="Přidat odpověď">
+                        <span class='fa fa-plus'></span>
+                    </button>
+                </div>
+                <input type="hidden" name="questions[{$questionCounter}][questions_id]" value="{$question['questions_id']}">
+            </div> 
+        {/foreach}     
+    {/ifset}
+    
+    <button type="button" id="btn" class='smallButton'><span class='fa fa-plus'> Přidat otázku</span></button>
+    
+  </div>  
+    {input send}    
+{/form}
+{/snippetArea wrapper}
+
+{include jsCallback,input => category, link => categoryChange}
+
+{define jsCallback}
+<script>
+    
+$('#' + {$control["testForm"][$input]->htmlId}).on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link {$link}!},
+        data: {
+            'value': $(this).val(),
+        }
+    });
+});
+
+</script>
+{/define}
+
+

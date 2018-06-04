@@ -1,0 +1,8 @@
+{block content}
+{control breadcrumb}
+<h2 n:block="title">Administrace textů</h2>
+{foreach $types as $index => $type}
+    <div class="help-item">
+        <a href="{link Text:add, id => $index}">{$type}</a>
+    </div>
+{/foreach}

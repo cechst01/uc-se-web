@@ -1,0 +1,102 @@
+{block content}
+{control breadcrumb}
+<h2 n:block="title">Administrace vláken</h2>
+{snippet wrapper}
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{var $orderNumber = ($type == 'DESC') ? 'fa fa-sort-numeric-desc' : 'fa fa-sort-numeric-asc'}
+{form threadsFilterForm}
+<div class="admin-table-wrapper">
+    <a class="add" href="{link :Front:Forum:manageThread $categoryId}">
+        <span class="fa fa-plus"> Přidat vlákno </span>
+    </a>
+    <table class="stripped-table">
+        <tr>
+            <th>
+                <a href="{link sortThreads! 'name', $type, $categoryId}">Název</a>
+                <span n:if="$sort == name" class="order {$order}"></span>
+            </th>
+            <th>
+                <a href="{link sortThreads! 'users.username', $type, $categoryId}">Autor</a>
+                <span n:if="$sort == 'users.username'" class="order {$order}"></span>
+            </th>        
+            <th>
+                <a href="{link sortThreads! 'posts_count', $type, $categoryId}">Počet příspěvků</a>
+                <span n:if="$sort == posts_count" class="order {$orderNumber}"></span>
+            </th>
+            <th>
+                <a href="{link sortThreads! 'last_post', $type, $categoryId}">Poslendí příspěvek</a>
+                <span n:if="$sort == last_post" class="order {$orderNumber}"></span>
+            </th>
+            <th>Stav</th>
+            <th>Akce</th>
+        </tr>
+        <tr>    
+                <td>{input namesearch}</td>
+                <td>{input authorsearch}</td>
+                <td></td>
+                <td></td>           
+                <td>{input lockedSelect}</td> 
+                <td>
+                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                        <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                </td>                       
+        </tr>
+
+        <tbody n:snippet="threads"> 
+        {foreach $threads as $thread}
+            {var $posts = $thread->related('posts')}
+            {var $postsCount = $posts->count()}
+            {var $lastPost = $posts->max('created_at')}
+            <tr>
+                <td>{$thread->name}</td>
+                <td>{$thread->users->username}</td>            
+                <td>{$postsCount}</td>
+                <td>
+                    {if $lastPost > '1999-1-1'}
+                        {$lastPost|date:'d. m. Y H:i:s'}
+                    {else}
+                     -
+                    {/if}               
+                </td> 
+                <td>{$thread->locked|bool: 'Zamčené','Odemčené'}</td>
+                <td>
+                    {if $thread->locked == 0}
+                        {var $lock = 'fa-lock'}
+                        {var $text = 'Zamčít'}
+                    {else}
+                        {var $lock = 'fa-unlock-alt'}
+                        {var $text = 'Odemčít'}
+                    {/if}
+                     <a href="{link :Front:Forum:posts $thread->threads_id}"
+                       class="ico-button" title="Zobrazit">
+                        <span class="fa fa-eye"></span>
+                    </a> 
+                    <a href="{link :Front:Forum:manageThread $categoryId, $thread->threads_id}"
+                       class="ico-button" title="Editovat">
+                        <span class="fa fa-pencil"></span>
+                    </a>                
+                    <a href="{link  deleteThread! $thread->threads_id}"
+                       class="confirm ico-button" title="Smazat">
+                        <span class="fa fa-trash-o"></span>
+                    </a>
+                    <a href="{link  Posts:manage $thread->threads_id}"
+                       class="ico-button" title="Spravovat příspěvky">
+                        <span class="fa fa-comments-o"></span>
+                    </a>            
+                    <a href="{link  lockThread! $thread->threads_id}"
+                       class="ico-button" title="{$text}">
+                        <span class="fa {$lock}"></span>
+                    </a>
+
+                </td>
+
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+{/form} 
+{/snippet}
+<div class="paginationWrapper">
+    {control paginator}
+</div>

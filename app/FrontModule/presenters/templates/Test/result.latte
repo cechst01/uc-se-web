@@ -1,0 +1,60 @@
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block title}
+    Výsledek testu - {$test['name']}
+{/block}
+
+{block content}
+{control breadcrumb}
+{var $letters = ['A','B','C','D','E','F','G','H'];}  
+<h1>{$test['name']}</h1>
+
+{ifset $resultArray}
+    {var $markedAnswers = $resultArray['markedAnswers']}
+    {var $rightAnswers = $resultArray['rightAnswers']}
+    {var $points = $resultArray['points']}
+    {var $rightCount = $resultArray['rightCount']}
+    {var $wrongCount = $resultArray['wrongCount']}
+    {var $totalCount = $rightCount + $wrongCount}
+    
+{/ifset}
+
+<h2 class="result"> Tvoje úspěšnost v tomto testu je: {floor($rightCount / $totalCount * 100)}%, získáváš {$resultArray['points']} bodů.</h2>
+
+{foreach $test['questions'] as $question}
+    {var $upper = $iterator->counter}
+    
+    <div class="question">
+        <strong class="question-text">{$iterator->counter .'. '.$question['question']}</strong> 
+        
+        {if $question[picture]}
+            <div>
+            <img src="{$basePath}/{$question[picture][url]}" alt="{$question[picture][alt]}">
+            </div>
+        {/if}
+
+        {foreach $question['answers'] as $answer}
+            <div class="answer">
+            {if $markedAnswers[$upper-1][$iterator->counter -1]}               
+                {$letters[$iterator->counter-1].') '}
+                <input type='checkbox' name="{$upper-1}-{$iterator->counter}" checked='true'>
+                {if $rightAnswers[$upper-1][$iterator->counter -1]}
+                    <b class="green">{$answer['text']}  (tvoje správná odpověď)</b>   
+                {else}
+                    <b class="red">{$answer['text']}  (tvoje  špatná odpověď)</b>  
+                {/if}
+            {else}               
+                {$letters[$iterator->counter-1].') '}
+                <input type='checkbox' name="{$upper-1}-{$iterator->counter}">
+                {if $rightAnswers[$upper-1][$iterator->counter -1]}
+                    <span class="gree">{$answer['text']}</span> (správná odpověď)
+                {else}
+                    {$answer['text']}
+                {/if}         
+            {/if}
+            </div>
+        {/foreach}
+    </div>
+{/foreach}

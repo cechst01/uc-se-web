@@ -1,0 +1,66 @@
+{block title}
+    Fórum
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/forum.css">	
+{/block}
+{block content}
+{control breadcrumb}
+<h2 class="margin-bottom-20">Kategorie</h2>
+{dump $categories}
+{if $categories}
+    <table class="stripped-table categories-table">
+           <tr>
+               <th>
+                   Kategorie:
+               </th>
+               <th>
+                   Vlákna:
+               </th>
+               <th>
+                   Příspěvky:
+               </th>
+               <th>
+                   Poslední příspěvek:
+               </th>
+           </tr>
+
+   {foreach $categories as $category} 
+       {var $threads = $category->related('threads')->fetchAll()}       
+       {var $threadsCount = count($threads)}     
+       {var $postsCount = 0}
+       {var $lastPost = '0-0-0000'}
+       {foreach $threads as $thread}
+           {var $posts = $thread->related('posts')}
+           {var $threadLastPost = $posts->max('created_at')}
+           {var $lastPost = $lastPost > $threadLastPost ? $lastPost : $threadLastPost}
+           {var $postsCount = $postsCount + $posts->count()}           
+       {/foreach}       
+         <tr>          
+             <td>
+               <h3><a href="{link Forum:threads $category->forum_categories_id}">{$category->name}</a></h3>
+               <p>{$category->description}</p>
+             </td>
+             <td>
+                 {$threadsCount}
+             </td>
+             <td>
+                  {$postsCount}
+             </td>      
+             <td>{if $lastPost > '1999-1-1'}
+                  {$lastPost|date:'d. m. Y H:i:s'}
+                  {else}
+                    -
+                  {/if}
+             </td>         
+         </tr>    
+   {/foreach}
+   </table>
+{else}    
+    <div class='emptyContainer'>
+        <h2 class='empty'> <i class ='fa fa-frown-o'></i> Fórum je bohužel prázdné.</h2>
+    </div>
+
+{/if}
+    

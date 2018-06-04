@@ -1,0 +1,34 @@
+{if $user->isLoggedIn()}   
+    <div class="wrapper">
+        Přihlášený uživatel: <a href="{plink :Front:Profile:show $user->id}">{$user->getIdentity()->getData()['username']}</a>
+    </div>
+    <div class="wrapper">
+        <a href="{link logout}">Odhlásit se</a>    
+        <a href="{plink :Front:Profile:manage $user->id}">Upravit profil</a>
+        <a href="{plink :Front:Sign:manage $user->id}">Změnit údaje</a>
+    </div> 
+    <div class="wrapper">
+        {if $user->isInRole('admin') || $user->isInRole('editor')}
+           <a href="{plink :Admin:Tutorial:manage}">Přidat tutoriál</a>
+           <a href="{plink :Admin:Exercise:manage}">Přidat cvičení</a>
+           <a href="{plink :Admin:Test:manage}">Přidat test</a>
+        {/if}
+    </div>
+    <div class="wrapper">
+        {if ($user->isInRole('admin') || $user->isInRole('editor'))}
+            {if $adminModule}
+                {var $text = 'Administrace'}
+            {else}
+                {var $text = 'Přepnout do administrace'}
+            {/if}
+            <a href="{plink :Admin:Homepage:}">{$text}</a>
+        {/if}
+    </div>
+{else}
+     {control form} 
+     <div class="wrapper">
+        <a href="{plink :Front:Sign:up}">Registrovat se</a> 
+        <a href="{plink :Front:Sign:forgotten}">Zapomenuté heslo</a> 
+     </div>
+{/if}
+

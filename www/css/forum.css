@@ -1,0 +1,73 @@
+/*############### Společné ###############/*
+
+/*tinymce vkládání vláken a příspěvků */
+
+.mce-form-wrapper table{
+    width: 60%;
+}
+
+.mce-form-wrapper .mce-edit-area iframe{
+    min-height: 200px;
+}
+/*############### Kategorie ###############*/
+
+.categories-table{     
+      width: 80%;        
+  }    
+
+  .categories-table td:nth-child(2){
+      text-align: center;
+  }
+  .categories-table td:nth-child(3){
+      text-align: center;
+  }     
+
+/*############### Vlakna ###############*/
+
+/* Zobrazení */
+.threads-table{     
+    width: 85%;        
+} 
+
+.threads-table tr:nth-child(2n+1){
+    background-color: #f7f7f7;
+}
+
+.threads-table td:nth-child(3){
+    text-align: center;
+}
+
+.threads-table td:nth-child(5){
+   min-width: 55px;           
+   border: none;
+   background-color: #fff;
+}
+
+
+
+
+/*############### Příspěcky  ###############*/
+
+.post-wrapper{
+   padding: 5px 0;   
+   border-bottom: 1px solid #eee;
+   overflow: auto;
+   margin-top: 20px;
+   border: 1px solid #424242;
+   box-shadow: 2px 2px 4px #999;   
+}
+
+/*############### Flexibilni ###############*/
+
+ @media only screen and (max-width: 660px) {
+     
+     /* Kategorie */
+     .categories-table, .threads-table{
+        width: 100%;
+    }   
+    
+    .mce-form-wrapper table{
+        width: 100%;
+    }
+    
+}

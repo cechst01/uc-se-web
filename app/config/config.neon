@@ -1,0 +1,115 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+    #emailova adresa - odesilatel emailu pro reset hesla a kontaktní email v pripade zamceni uctu
+    email: 'administrator@uc-se-web.cz'
+    # text emailu ktery pro reset hesla
+    emailText: '''
+                Z vašeho účtu na serveru Uč-se-web.cz byla odeslána žádost o resetování hesla.
+                V případě že chcete heslo resetovat, klikněte na odkaz níže. 
+    '''
+    # maximalni velikost obrazku (profilovy obrazek, hlavni obrazky tutorialu,cviveni,testu) v kB
+    maxFileSize: 256
+    # nastaveni rozmeru obrazku po ulozeni - sirka x vyska
+    imageSize: [160,160]
+    # nastaveni rozmeru obrazku u otazek testu po ulozeni - sirka x vyska
+    questionImageSize: [500,300]
+    # maximalni velikost obrazku u otazek testu
+    questionMaxFileSize: 512
+    # minimalni delka hesla
+    passwordLength: 7
+    # doba za kterou je mozna znovu zkusit jiz napsany test -  ve dnech
+    testRewrite: 90
+    # doba platnosti tokenu pro reset hesla  - ve dnech
+    tokenValidity: 1
+      
+
+extensions:
+    #replicator: Kdyby\Replicator\DI\ReplicatorExtension
+
+
+application:
+        #catchExceptions: yes
+        errorPresenter: Front:Error
+        mapping:
+            *: *Module\*Presenter
+
+
+session:
+	#expiration: 14 days
+
+
+services:   
+    - App\Model\CategoryManager
+    - App\Model\SectionManager
+    - App\Model\TutorialManager
+    - App\Model\ExerciseManager
+    - App\Model\ExerciseResultManager
+    - App\Model\ConditionManager  
+    - App\Model\TestManager
+    - App\Model\QuestionManager
+    - App\Model\AnswerManager
+    - App\Model\ResultManager(%testRewrite%)
+    - App\Model\ProfileManager
+    - App\Model\PictureManager(%maxFileSize%,%imageSize%,%questionImageSize%,%questionMaxFileSize%)
+    - App\Model\CommentManager
+    - App\Model\ThreadManager
+    - App\Model\PostManager   
+    - App\Model\TextManager
+    - App\Model\ForumManager
+    - App\Model\LevelManager 
+    - App\RouterFactory
+    router: @App\RouterFactory::createRouter
+    authenticator: App\Model\UserManager(%email%,%tokenValidity%,%passwordLength%,%emailText%)
+
+    menuControlFactory: 
+                implement: App\Components\IMenuControlFactory
+
+    userControlFactory:  
+                implement: App\Components\IUserControlFactory
+                setup:
+                        - setAdminEmail(%email%)
+
+    pictureControlFactory: 
+                implement: App\Components\IPictureControlFactory
+
+    paginationControlFactory: 
+                implement: App\Components\IPaginationControlFactory                
+                setup:
+                        - setRadius(5)
+                        - setItemsPerPage(3)    
+
+    security.authorizator:
+        setup:        
+         - addResource('Admin:Homepage')
+         - addResource('Admin:Tutorial')
+         - addResource('Admin:Tutorials')
+         - addResource('Admin:Exercise','Admin:Tutorial')
+         - addResource('Admin:Test','Admin:Tutorial')
+         - addResource('Admin:Exercises','Admin:Tutorials')
+         - addResource('Admin:Tests','Admin:Tutorials')
+         - addResource('Admin:Profile')        
+         - addResource('Admin:Sign')
+         - addResource('Admin:Text')      
+         - addResource('Admin:Menu','Admin:Text')
+         - addResource('Admin:Sections','Admin:Text')
+         - addResource('Admin:Users','Admin:Text')
+         - addResource('Admin:Categories','Admin:Text')
+         - addResource('Admin:Threads','Admin:Text')
+         - addResource('Admin:Posts','Admin:Text')
+         - addResource('Admin:Comments','Admin:Text')
+         - addResource('Admin:Level','Admin:Text')
+         - allow('editor','Admin:Homepage')
+         - allow('editor','Admin:Tutorial')
+         - allow('editor','Admin:Tutorials')
+         - allow('admin','Admin:Text')
+   
+security:
+    roles:
+        guest:
+        member: [guest]
+        editor: [member]
+        admin:  [editor]
+

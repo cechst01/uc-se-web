@@ -1,0 +1,80 @@
+{block myCss}
+<link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block content}
+{control breadcrumb}
+{var $profileUser = $profile->users}
+{var $picture = $profile->ref('pictures','pictures_id')}
+{var $role = $profileUser->role->view_name}
+{var $level = $profileUser->ref('user_level','user_level_id')}
+<div class='profile-wrapper'>
+    
+    <div class="left avatar-wrapper">
+        <img src='{$basePath}/{$picture->url|nocheck}' class="profile-avatar" alt="{$picture->alt}">
+        <div class="level">           
+            <strong> Úroveň: </strong> {$level->name}
+        </div>
+        <div class="points-meter">
+            <meter value="{$profileUser->points}" min="0" max="{$level->max_points + 1}"> 
+            </meter>
+        </div>
+        <div class="points">
+            {$profileUser->points}/{$level->max_points + 1}
+        </div>
+        <div>
+            <strong>Pořadí: </strong> <a href="{link :Front:Rank:show}">{$rank}</a>
+        </div>
+    </div>
+    
+    <div class=' left profile-info'>
+        <h2 n:block="title" class="">{$profile->users['username']}</h2>
+        <div class='profile-one-line'>
+            <strong> Moje role: </strong> {$role}
+        </div>
+        <div class='profile-one-line'>
+            <strong> Pohlaví: </strong> {$sex}
+        </div>
+        <div class='profile-one-line'>
+            <strong> Bydliště: </strong> {$profile->address}
+        </div>        
+        <div class='profile-multi'>
+            <strong>Motto:</strong>
+            <p>{$profile->motto}</p>
+        </div>
+        <div class='profile-multi'>
+            <strong>O mě:</strong>
+            <p>{$profile->about_me}</p>
+        </div>
+        <div class='profile-one-line'>            
+            <strong> www: </strong> <a href='//{$profile->www|url}' target='blank'>{$profile->www}</a>
+        </div>
+        
+    </div>
+
+
+</div>
+{if $testResults}
+    <div class="results left">
+        <h3> Výsledky mých testů </h3>
+        {foreach $testResults as $result}
+            {var $percent = floor($result->right_count / ($result->right_count + $result->wrong_count) * 100 )}
+            {if $user->id == $profileUser['users_id']}
+                <a href='{link Test:result,$result->tests->tests_id}'>{$result->tests->name}: {$percent}%</a>
+            {else}
+                {$result->tests->name}: {$percent}%  
+            {/if}
+            <br>
+        {/foreach}
+    </div>
+{/if}
+
+{if $exerciseResults}
+    <div class="results right">
+        <h3> Splněná cvičení </h3>
+        {foreach $exerciseResults as $result}          
+             {$result->exercises->name}
+             <br>
+        {/foreach}
+    </div>
+{/if}

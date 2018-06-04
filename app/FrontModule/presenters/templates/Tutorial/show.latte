@@ -1,0 +1,83 @@
+{block title}
+    Tutorial - {$tutorial->name}
+{/block}
+
+{block myScripts}
+    <script src="{$basePath}/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="{$basePath}/js/front/tutorial.js"></script>
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+<h2 class="content-header">{$tutorial->name}</h2>
+<div class="code-wrapper" data-url="{link :Front:Tutorial:test}">
+{$tutorial->content|noescape}
+</div>
+
+<div class='toggle-comments'>
+        <span class='fa fa-comments toggle-comments-ico'></span>
+        <span class='toggle-comments-text'>Zobrazit komentáře</span>
+        <span> 
+            {if $comments}
+                ({count($comments)})
+            {else}
+                (0)
+            {/if}
+        </span>
+</div>
+
+<div n:class="comments, table-space10, $hidden ? hidden">  
+{foreach $comments as $comment}    
+    {var $myUser = $comment->users}
+    {var $profile = $myUser->ref('profiles','users_id')}
+    {var $picture = $profile->ref('pictures','pictures_id')}
+    <div class='comment-wrapper code-wrapper {last}last{/last}'
+         data-url="{link :Front:Tutorial:test}">
+    <table>
+    <tr>
+        <td rowspan='2'>
+            <img src='{$basePath}/{$picture->url|nocheck}' class="avatar" alt="{$picture->alt}">
+            <h4 class='center'>{$myUser->username}</h4>
+        </td>
+        <td>            
+            {$comment->content|noescape}            
+        </td>
+    </tr>       
+      
+    <tr>        
+        <td>
+            Vloženo: {$comment->created_at|date:'d. m. Y H.i:s'}
+            
+            {if ($user->id == $comment->users_id)} 
+                <a href="{link editComment!  $comment->comments_id}" title='Editovat komentář'
+                   class='ico action-button'>
+                    <span class='fa fa-edit'></span>
+                </a> 
+                <a href="{link deleteComment!  $comment->comments_id}" 
+                   class="confirm ico action-button" title='Smazat komentář'>
+                    <span class='fa fa-trash-o'></span>
+                </a>
+            {/if}
+            {if $user->isLoggedIn() && $user->id != $comment->users_id}
+            <span data-re="{$myUser->username}"
+                  class="re fa fa-comment-o ico action-button" title='Reagovat'></span>
+            {/if}
+        </td>
+    </tr>   
+   </table>
+    </div>
+{/foreach}   
+{if $user->isLoggedIn()}
+    <div class='comment-form-wrapper'>
+        {control commentForm}
+    </div>
+{/if}
+
+</div>
+
+

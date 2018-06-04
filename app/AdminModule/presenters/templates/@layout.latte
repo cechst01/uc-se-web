@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">        
+        <meta name="viewport" content="width=device-width">
+        {block scripts}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+            <script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+            <script src="{$basePath}/js/nette.ajax.js"></script> 
+            <script src="{$basePath}/js/spinner.ajax.js"></script>                   
+            <script src="{$basePath}/js/prism.js"></script>	
+            {ifset myScripts}{include myScripts} {/ifset}
+            <script src="{$basePath}/js/main.js"></script>       
+	{/block}
+        
+        {block css}	
+            <link rel="stylesheet" href="{$basePath}/css/prism.css">      
+            <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Roboto+Condensed:300&amp;subset=latin-ext" rel="stylesheet"> 
+            <link rel="stylesheet" href="{$basePath}/font-awesome/css/font-awesome.min.css">     
+            {ifset myCss}{include myCss} {/ifset} 
+            <link rel="stylesheet" href="{$basePath}/css/main.css">
+            <link rel="stylesheet" href="{$basePath}/css/admin.css">	
+        {/block}
+        
+        <title>
+            {ifset title}{include title|stripHtml} | {/ifset}
+            {if $header}
+                {$header->content|striptags}
+            {/if}
+        </title>
+
+	{block head}{/block}
+</head>
+
+<body>
+    <header class="main-header">
+        <h1><a href="{link :Front:Homepage:}" n:if="$header">{$header->content|striptags}</a></h1>
+        <div id="userBarWrapper" class="">
+            {control userBar}        
+        </div>
+        
+        <nav id="menu"> 
+            <ul class="categories">
+                {control menu}                
+            </ul>
+        </nav>      
+            
+    </header>
+        {snippet flashes}
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+        {/snippet}
+     <div class="content">
+	{include content}
+     </div>
+     
+     <footer id="main-footer" class="clear">
+         {if $footer}
+            {$footer->content|striptags}
+         {/if}
+     </footer>
+	
+</body>
+</html>

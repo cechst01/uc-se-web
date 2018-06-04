@@ -1,0 +1,21 @@
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block title}
+    Kategorie - {$category->name}
+{/block}
+
+{block content}
+{control breadcrumb}
+{if !$sections}  
+    <div class='emptyContainer'>
+        <h2 class='empty'> <i class ='fa fa-frown-o'></i> Kategorie je bohužel prázdná.</h2>
+    </div>
+{/if}
+{foreach $sections as $section}
+    <div class="section {last}last{/last} ">
+    <h2> <a href="{link Section:show $section->sections_id}">{$section->name}</a></h2>
+    <p>{$section->description}</p>
+    </div>
+{/foreach}

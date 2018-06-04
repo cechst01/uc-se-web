@@ -1,0 +1,25 @@
+{block myScripts}
+    <script src="{$basePath}/js/admin/level.js"></script>
+{/block}
+
+{block content}
+{form levelForm}
+    <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div n:foreach ="$levels as $level" id="{$level->user_level_id}" class="user-level">
+        {var $id = $level->user_level_id}
+        <label>Název:</label
+        ><input type="text" value="{$level->name}" name="level[{$id}][name]"
+                data-nette-rules='[{"op":":filled","msg":"Musíte vyplnit název úrovně."}]'
+        ><label>Limit bodů:</label
+        ><input type="number" value="{$level->max_points}" name="level[{$id}][max_points]"
+                data-nette-rules='[{"op":":filled","msg":"Vypln to"},{"op":":integer","msg":"Please enter a valid integer."},
+                {"op":":min","msg":"Musí být větší než 0","arg":1}]'
+        ><button class="ico-button remove-level" type="button"><span class="fa fa-trash-o"></span></button>
+    </div>   
+    <div>
+        <button class="add-level" type="button">Přidat</button>
+    </div>
+    {input send}
+{/form}

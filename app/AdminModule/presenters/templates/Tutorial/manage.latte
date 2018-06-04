@@ -1,0 +1,91 @@
+{block myScripts}
+    <script src="{$basePath}/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="{$basePath}/js/admin/tutorial.js"></script>
+{/block}
+
+{block title}
+    Editace tutorialu
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+{ifset $name}
+    <h2>Úprava tutorialu: {$name}</h2>
+{else}
+    <h2>Vložení tutorialu</h2>
+{/ifset}
+{snippetArea wrapper}
+{form tutorialForm}
+    <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+     <div class="itemInfosection">
+         <table>
+             <tr>
+                <th><th>
+             </tr>
+             <tr>
+                 <td>{label category /}</td>
+                 <td>{input category} </td>
+             </tr>             
+                
+            <tr>
+                <td>{label sections_id /}</td>
+                <td>{snippet form}{input sections_id}{/snippet} </td>
+            </tr>
+            
+            <tr>
+                <td>{label name /}</td>
+                <td>{input name}</td>
+            </tr>
+            
+            <tr>
+                <td>{label hidden /}</td>
+                <td>{input hidden}</td>
+            </tr>
+            
+             <tr>
+                <td>{label description /}</td>
+                <td>{input description}</td>
+            </tr>            
+            
+            <tr>
+                <td>Aktuální obrázek:</td>
+                <td>{control picture}</td>
+            </tr>
+            
+            <tr>
+                <td>{label file /}</td>
+                <td>{input file}</td>
+            </tr>
+     
+         </table>
+      </div>
+
+    <div class="tutorial-mce">
+      {input content}      
+      {input send}
+    </div>
+
+{/form}
+{/snippetArea wrapper}
+
+
+
+{include jsCallback,input => category, link => categoryChange}
+
+{define jsCallback}
+<script>
+$('#' + {$control["tutorialForm"][$input]->htmlId}).on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link {$link}!},
+        data: {
+            'value': $(this).val(),
+        }
+    });
+});
+
+</script>
+{/define}

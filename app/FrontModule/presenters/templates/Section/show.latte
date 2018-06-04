@@ -1,0 +1,85 @@
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+{block title}
+    Sekce - {$section->name}
+{/block}
+{block content}
+{control breadcrumb}
+{if !$tutorials && !$exercises && !$tests}
+    <div class='emptyContainer'>
+    <h2 class='empty'> <i class ='fa fa-frown-o'></i> Sekce je bohužel prázdná.</h2>
+    </div>
+{/if}
+{if $tutorials}
+<div class="itemsWrapper">
+    {if $exercises || $tests}
+        <h2 class="content-center head2">Tutoriály</h2>
+    {/if}
+    {foreach $tutorials as $tutorial}       
+        <table class="itemTable {last}last{/last}">
+          <tr>
+            {var $picture = $tutorial->ref('pictures','pictures_id')}
+            <td class="itemPictureCell">
+            {ifset $picture->url}
+                <img src='{$basePath}/{$picture->url|nocheck}'class='itemPicture' alt="{$picture->alt}">
+            {/ifset}
+            </td>
+            <td>
+                <h2><a href="{link Tutorial:show $tutorial->tutorials_id}">{$tutorial->name}</a></h2>
+                <p>{$tutorial->description}</p>                
+            </td>
+          <tr>
+        </table>
+    {/foreach}
+</div>
+{/if}
+
+{if $exercises}    
+<div class="itemsWrapper">
+     {if $tutorials || $tests}
+        <h2 class="content-center head2">Cvičení</h2>
+    {/if}
+    {foreach $exercises as $exercise}    
+        <table class="itemTable {last}last{/last}">            
+          <tr>
+            {var $picture = $exercise->ref('pictures','pictures_id')}            
+            <td class="itemPictureCell">
+            {ifset $picture->url}
+            <img src='{$basePath}/{$picture->url|nocheck}'class='itemPicture' alt="{$picture->alt}">             
+            {/ifset}
+            </td>
+            <td>
+            <h2><a href="{link Exercise:show $exercise->exercises_id}">{$exercise->name}</a></h2> 
+            <p>{$exercise->description}</p>   
+            </td>
+           </tr>
+         </table>
+
+    {/foreach}    
+</div>
+{/if}
+
+{if $tests}
+<div class="itemsWrapper">
+    {if $exercises || $tutorials}
+        <h2 class="content-center head2">Testy</h2>
+    {/if}
+    {foreach $tests as $test}
+        <table class="itemTable {last}last{/last}">
+            <tr>
+                {var $picture = $test->ref('pictures','pictures_id')}
+                <td class="itemPictureCell"> 
+                {ifset $picture->url}                
+                <img src='{$basePath}/{$picture->url|nocheck}'class='itemPicture' alt="{$picture->alt}">    
+                {/ifset}
+                </td> 
+                <td>
+                <h2><a href="{link Test:show $test['tests_id']}">{$test['name']}</a></h2>
+                <p>{$test['description']}</p>               
+                </td>
+            </tr>
+        </table>          
+    {/foreach}   
+</div>
+{/if}

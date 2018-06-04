@@ -1,0 +1,65 @@
+{block content}
+{control breadcrumb}
+<h2 n:block="title">Administrace příspěvků</h2>
+{var $order = ($type == 'DESC') ? 'fa fa-sort-alpha-desc' : 'fa fa-sort-alpha-asc'}
+{var $orderNumber = ($type == 'DESC') ? 'fa fa-sort-numeric-desc' : 'fa fa-sort-numeric-asc'}
+{form postsFilterForm}
+<div class="admin-table-wrapper code-wrapper" data-url="{link :Front:Tutorial:test}">
+    <table class="stripped-table">
+        <tr>       
+            <th>
+                <a href="{link sortPosts! 'users.username', $type, $threadId}">Autor</a>
+                <span n:if="$sort == 'users.username'" class="order {$order}"></span>
+            </th>        
+            <th>
+                <a href="{link sortPosts! 'content', $type, $threadId}">Obsah</a>
+                <span n:if="$sort == content" class="order {$order}"></span>
+            </th>
+            <th>
+                <a href="{link sortPosts! 'created_at', $type, $threadId}">Vloženo</a>
+                <span n:if="$sort == created_at" class="order {$orderNumber}"></span>
+            </th>
+            <th>
+                <a href="{link sortPosts! 'changed_at', $type, $threadId}">Změněno</a>
+                <span n:if="$sort == changed_at" class="order {$orderNumber}"></span>
+            </th>
+            <th>Akce</th>
+        </tr>
+        <tr>    
+                <td>{input authorsearch}</td>
+                <td>{input contentsearch}</td>
+                <td></td>
+                <td></td>          
+                <td>
+                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                        <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                </td>                       
+        </tr>
+
+        <tbody n:snippet="posts"> 
+        {foreach $posts as $post}   
+            <tr>
+                <td>{$post->users->username}</td>
+                <td>{$post->content|noescape}</td>           
+                <td>{$post->created_at|date:'d.m.Y H:i:s'}</td>
+                <td>{$post->changed_at|date:'d.m.Y H:i:s'}</td>             
+                <td>               
+                   <a href="{link  :Front:Forum:managePost $post->post_id}"
+                      class="ico-button" title="Editovat">
+                       <span class="fa fa-pencil"></span>
+                   </a>                 
+                    <a href="{link  deletePost! $post->post_id}"
+                       class="confirm ico-button" title="Smazat">
+                        <span class="fa fa-trash-o"></span>
+                    </a>               
+                </td>
+
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+{/form} 
+<div class="paginationWrapper">
+    {control paginator}
+</div>

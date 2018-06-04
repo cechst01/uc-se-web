@@ -1,0 +1,23 @@
+{block myCss}
+<link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+{block content}
+{control breadcrumb}
+<div class="center-div">
+    <table class="rank-table stripped-table center">
+        <tr>
+            <th>Pořadí</th>
+            <th>Jméno</th>
+            <th>Počet bodů</th>
+        </tr>
+        <tr n:foreach="$ranks as $rank">
+            {var $rankNumber = $rank->better == 0 && $rank->same == 0 ? '1.' : $rank->same == 1 ? ($rank->better + 1).'.' : ($rank->better + 1) . '-' . ($rank->better + $rank->same) . '.'  }
+            <td>{$rankNumber}</td>
+            <td>{$rank->username}</td>
+            <td>{$rank->points}</td>
+        </tr>
+    </table>
+</div>
+<div class="paginationWrapper">
+    {control paginator}
+</div>

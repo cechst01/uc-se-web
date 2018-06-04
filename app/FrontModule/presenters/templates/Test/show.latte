@@ -1,0 +1,40 @@
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/css/content.css">	
+{/block}
+
+{block title}
+    Test - {$test[name]}
+{/block}
+
+{block content}
+{var $letters = ['A','B','C','D','E','F','G','H'];}
+{control breadcrumb}
+{control helpControl}
+<h1>{$test['name']}</h1>
+{form resultForm}
+    {foreach $test['questions'] as $question} 
+        {var upper = $iterator->counter}
+        <div class="question">
+            <strong class="question-text">{$iterator->counter .'. '.$question['question']}</strong>
+
+            {if $question[picture]}
+                <div>
+                <img src="{$basePath}/{$question[picture][url]}" alt="{$question[picture][alt]}">
+                </div>
+            {/if}
+            {foreach $question['answers'] as $answer}     
+                <div class="answer">
+                    {$letters[$iterator->counter-1].') '}
+                    <input type='checkbox' name="{$upper-1}-{$iterator->counter}">
+                    {$answer['text']}   
+                </div>   
+            {/foreach}
+        </div>
+
+    {/foreach}
+
+        <input type="hidden" name='tests_id' value="{$test['tests_id']}">
+    <div class="button-wrapper">
+    {input send}
+    </div>
+{/form}

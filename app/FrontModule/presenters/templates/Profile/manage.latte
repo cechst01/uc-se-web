@@ -1,0 +1,52 @@
+{block title}
+    Úprava profilu
+{/block}
+{block content}
+{control breadcrumb}
+<h2> 
+    {if $user->isInRole('admin')&& $profile->users_id != $user->id}
+        Úprava profilu uživatele {$profile->users->username}
+    {else}
+        Úprava mého profilu 
+    {/if}
+   
+</h2>
+  
+{form profileForm}
+    <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div class="inputs-200 table-space10">
+        <table>
+            <tr>
+                <td>Aktuální obrázek:</td>
+                <td>{control picture}</td>
+            </tr>
+            <tr>
+                <td>{label photo}</td>
+                <td>{input photo}</td>
+            </tr>
+            <tr>
+                <td>{label about_me}</td>
+                <td>{input about_me}</td>
+            </tr>
+            <tr>
+                <td>{label motto}</td>
+                <td>{input motto}</td>
+            </tr>
+            <tr>
+                <td>{label sex}</td>
+                <td>{input sex}</td>
+            </tr>
+            <tr>
+                <td>{label address}</td>
+                <td>{input address}</td>
+            </tr>
+            <tr>
+                <td>{label www}</td>
+                <td>{input www}</td>
+            </tr> 
+        </table>
+            {input send}
+    </div>
+{/form}

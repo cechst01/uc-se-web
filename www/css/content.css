@@ -1,0 +1,389 @@
+/*############### Obecné ##############*/
+
+.content-header{
+    font-size: 1.9em;
+    color: #fff;
+    background-color: #6DA0F7;
+    text-align: center;
+}
+
+
+
+/*############### Skece ###############*/
+
+.itemsWrapper{
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px 0 0 0;
+}
+    
+.itemsWrapper:last-of-type{
+    border: none;
+}
+
+.itemsWrapper a:hover{
+    color:#6DA0F7;
+}
+
+.inline{
+    display: inline-block;
+}
+
+.content-center{
+    text-align: center;
+    border-bottom: 3px double whitesmoke;
+}
+.head2{
+    margin: 5px 0;
+}
+
+.itemPicture{
+    display: inline-block;
+    width: 140px;
+    height: 140px;        
+}
+
+.itemPictureCell{
+    width: 140px;
+    height: 140px;
+    padding: 10px 30px 10px 10px;
+}
+
+.itemTable{
+    width: 98%;
+    border-bottom: 1px solid whitesmoke;
+    margin: 30px  auto 0px auto;
+}
+
+.itemTable.last
+{
+    border: none;
+}
+
+/* prazda sekce nebo kategorie
+
+.fa-angle-down{   
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+}
+
+.empty{
+    font-size: 40px;    
+    text-align: center;
+    color: #ccc;    
+    }
+
+.empty > .fa{
+    font-size: 80px;
+    display: inline-block;
+    margin: 0 10px;    
+}
+
+.emptyContainer{   
+    width: 100%;
+    padding: 60px 0;;
+    box-sizing: border-box;
+}
+
+*/
+
+/*############### Tutorial ###############*/
+
+/* Zobrazení*/
+
+.toggle-comments{
+    display: inline-block;
+    padding: 5px;
+}
+.toggle-comments:hover{
+    color: #6DA0F7;
+    cursor: pointer;
+}
+
+.toggle-comments:hover > .toggle-comments-text{ 
+    text-decoration: underline;
+}
+
+.toggle-comments-ico{
+    font-size: 22px;
+}
+
+.comment-wrapper, .post-wrapper{ 
+   padding: 5px 0;   
+   border-bottom: 1px solid #eee;
+   overflow: auto;
+}
+
+.comment-wrapper.last {
+    margin-bottom: 15px;
+    border-bottom: none;
+}
+
+.comment-form-wrapper{
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.comment-form-wrapper table{
+    width: 60%;
+}
+
+.comment-form-wrapper .mce-edit-area iframe{
+    min-height: 200px;
+}
+
+/* Editor */
+
+.CodeMirror{
+    width: 100%;
+    margin: 0;
+    min-height: 450px;        
+}
+
+.input-part{
+    width: 41%;
+    border: 1px solid #ccc;    
+}   
+.frameWrapper{
+    border: 1px solid #ccc;
+    width: 55%;
+    min-height: 450px;
+    height: 1px;
+    overflow: auto;
+    margin-left: 5px;
+}
+
+
+.wrapper{
+    width: 100%;
+    height: 100%;   
+}
+
+.small-width{
+    display: none;
+}
+
+.editor-help .help{
+    top: 3px;
+    right: 5px;
+}
+
+/*############### Cvičení ###############*/
+#task{
+    width: 100%;        
+    background-color: #6DA0F7; 
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    font-size: 17px; 
+    box-shadow: 1px 2px 5px #ccc;
+}
+   
+#frame{
+     width: 100%;
+     height: 98%;
+     border: none;
+     resize: none;         
+}
+
+.none{
+    display: none;
+}
+
+.editor-wrapper{      
+    width: 100%;
+    margin: 0 10px 10px 0;
+}
+.exercise-input-part .CodeMirror{
+    width: 99%;
+    min-height: 420px;        
+    margin-top: 0;
+}
+
+.exercise-frameWrapper{
+    border: 1px solid #ccc;
+    width: 58%;
+    min-height: 450px;
+    height: 1px;
+    overflow: auto;
+}
+
+.exercise-input-part{
+  width: 41%;
+  padding-top: 2px;
+}
+
+.editor-choice{
+    width: 15%;
+    display: inline-block;
+    margin-right: 5px;       
+    cursor: pointer;       
+    padding: 5px;
+    background-color: #fcfcfc;
+    color: #ccc;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-left: 1px solid whitesmoke;
+}
+
+.active{
+    background-color: #6DA0F7;
+    color: #fff;
+    font-weight: 600;
+}
+
+.hidden{
+    display: none;
+}
+
+/*############### Test ###############*/
+
+/* Zobrazení */
+
+.answer{
+    padding: 1px 0 0 1px;
+}
+    
+.question{
+    padding-bottom: 20px;
+}
+
+.question-text{
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+/* Výsledek */
+
+.green{
+   color: #68ed63;
+}
+
+.red{
+   color: #ff6666;
+}
+
+.result{
+    margin-bottom: 20px;
+}
+
+/*############### Profil ###############*/
+
+  
+.profile-wrapper{
+    padding: 0 20px 20px 20px;
+    border: 1px solid #ccc;
+    overflow: auto;        
+}
+
+.avatar-wrapper{       
+   margin: 20px 30px 0 0;
+   text-align: center;
+}
+
+.profile-avatar{
+    border: 1px solid #f7f7f7;
+    box-shadow: 6px 6px 5px #999; 
+}
+
+.level{
+    margin: 5px 0 0 0;
+}
+
+.points-meter{
+    margin: 5px 0 0 0;
+}
+
+.points{
+    margin: 0 0 5px 0;
+}
+
+.profile-info{        
+    margin: 20px 0 0 0;      
+    background-color: #6DA0F7;
+    color: #fff;
+    min-width: 220px;
+    max-width: 500px;
+    padding: 15px;       
+   box-shadow: 6px 6px 6px #999;
+}
+.profile-info a:hover{
+    color: #424242;
+}
+.profile-one-line{
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.profile-multi strong{
+    margin: 10px 0;
+}
+.profile-multi{
+    margin-top: 10px;
+}
+
+.profile-multi p{
+    margin: 1px;
+}
+.results{
+    margin-top: 15px;
+    box-sizing: border-box;    
+    padding: 0px 15px 15px 15px;;
+    width: 50%;
+}
+.results a:hover{
+    color: #6DA0F7;
+}
+
+/* Žebříček uživatelů */
+
+.rank-table{
+    width: 100%; 
+}
+
+
+.center-div{
+    margin: 0 auto; 
+    width: 50%;
+    min-width: 500px;
+}
+
+
+
+
+/*############### Flexibilní ###############*/
+
+@media only screen and (max-width: 660px){
+    
+    /*########## Tutorial ##########*/
+    
+    /* Editor */
+    
+    .input-part.left, .exercise-input-part{
+        float: none;
+        width: 100%;
+    }     
+   
+    .exercise-frameWrapper.left{
+       float: none;
+       width: 100%;
+       margin: 0;
+    }   
+    
+    .small-width{
+       display: block;
+    }
+    .normal-width{
+        display: none;
+    }
+    
+    /* Žebříček uřivatelů */
+    
+    .center-div{
+        margin: 0 auto; 
+        width: 100%;        
+    }
+    
+}

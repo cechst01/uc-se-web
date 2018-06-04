@@ -1,0 +1,10 @@
+{block title}
+    Editace kategorie fóra
+{/block}
+{block content}
+{ifset $name}
+    <h2>Úprava kategorie: {$name}</h2>
+{else}
+    <h2>Vložení kategorie</h2>
+{/ifset}
+{control categoryForm}

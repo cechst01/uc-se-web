@@ -1,0 +1,171 @@
+
+{block myScripts}
+    <script src="{$basePath}/codemirror/lib/codemirror.js"></script>
+    <script src="{$basePath}/codemirror/mode/javascript/javascript.js"></script>
+    <script src="{$basePath}/codemirror/mode/xml/xml.js"></script>
+    <script src="{$basePath}/codemirror/mode/css/css.js"></script>
+    <script src="{$basePath}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="{$basePath}/js/admin/exercise.js"></script>
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="{$basePath}/codemirror/theme/3024-day.css">
+{/block}
+
+{block title}
+    Editace cvičení
+{/block}
+
+{block content}
+{control breadcrumb}
+{control helpControl}
+{ifset $name}
+    <h2>Úprava cvičení: {$name}</h2>
+{else}
+    <h2>Vložení cvičení</h2>
+{/ifset}
+{snippetArea wrapper}
+{form exerciseForm}
+     <ul class="form-error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div class="itemInfosection">
+        <table>
+            <tr>
+                <td>{label category/}</td>
+                <td>{input category}</td>
+            </tr>
+            <tr>
+                <td>{label sections_id /}</td>
+                <td>{snippet form}{input sections_id}{/snippet}</td>
+            </tr>
+            <tr>
+                <td>{label name /}</td>
+                <td>{input name}</td>
+            </tr>
+            <tr>
+                <td>{label hidden /}</td>
+                <td>{input hidden}</td>
+            </tr>
+            <tr>
+                <td>{label description /}</td>
+                <td>{input description}</td>
+            </tr>
+            <tr>
+                <td>{label task /}</td>
+                <td>{input task}</td>
+            </tr>
+            <tr>
+                <td>{label points /}</td>
+                <td>{input points}</td>
+            </tr>
+            <tr>
+                <td>Aktuální obrázek:</td>
+                <td>{control picture}</td>
+            </tr>
+            
+            <tr>
+                <td>{label file /} </td>
+                <td>{input file}</td>
+            </tr>
+        </table>
+    </div>       
+      <div class="editorWrapper">
+      {label html_code /}      
+      <br>
+      {input html_code}
+      </div>
+      <div class="editorWrapper">
+      {label css_code /} 
+      <br>
+      {input css_code}
+      </div>
+      <div class="editorWrapper">
+      {label js_code /} 
+      <br>
+      {input js_code}
+      </div>    
+     <div class="conditionsWrapper clear">      
+        <table class='tableConditions'>              
+             <tr>              
+                <th> Selektor: </th>
+                <th> Zkontroluj jestli: </th>
+                <th> Jaký atribut/vlastnost: </th>   
+                <th> Kontrolovaná hodnota: </th>
+                <th> Chybová zpráva: </th>
+             </tr>
+
+             <tr id="firstCondition" class="condition">
+
+                 <td><div class="label"> {label selector}</div>{input selector}</td>
+                <td><div class="label">{label type}</div>{input type}</td>  
+                <td><div class="label">{label property}</div>{input property}</td>             
+                <td><div class="label">{label value}</div>{input value}</td>
+                <td><div class="label">{label message}</div>{input message}</td>
+                <td>
+                    <button name="remove" class="remove ico-button" title="Odebrat podmínku" type="button">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </td> 
+             </tr>
+             {ifset $conditions}
+              {foreach $conditions as $condition}                  
+                  {var $i = $iterator->counter}
+                  {var $name = 'conditions['.$i.']'}
+                 <tr class='condition'>
+                     <td><input type="textbox" name='{$name.'[selector]'}' value='{$condition['selector']}' class="selector"></td> 
+                     <td><select name='{$name.'[type]'}' class="type">
+                         {foreach $types as $type}
+                           <option value="{$iterator->counter-1}"{if $condition[type] == $iterator->counter-1}
+                                 selected 
+                               {/if}>
+                               {$types[$iterator->counter -1]}
+                           </option>
+                         {/foreach} 
+                         </select>
+                     </td> 
+                     <td><input type="textbox" name='{$name.'[property]'}' 
+                                {if $condition['property']}
+                                    value='{$condition['property']}'
+                                {else}
+                                    disabled=''
+                                {/if}
+                                class="property"> </td> 
+                     <td><textarea name='{$name.'[value]'}' class="value">{$condition['value']}</textarea></td>
+                     <td><textarea name='{$name.'[message]'}' class="message">{$condition['message']}</textarea></td> 
+                     <td>
+                          <button name="remove" class="remove ico-button" title="Odebrat podmínku" type="button">
+                            <span class="fa fa-trash-o"></span>
+                          </button>
+                     </td>
+                 </tr>
+              {/foreach}
+             {/ifset}
+             
+          </table>
+        </div>  
+        {input send}
+
+{/form}
+  
+{/snippetArea wrapper}
+
+{include jsCallback,input => category, link => categoryChange}
+
+{define jsCallback}
+
+<script>
+
+$('#' + {$control["exerciseForm"][$input]->htmlId}).on('change', function() {
+    $.nette.ajax({
+        type: 'GET',
+        url: {link {$link}!},
+        data: {
+            'value': $(this).val(),
+        }
+    });
+});
+
+</script>
+{/define}

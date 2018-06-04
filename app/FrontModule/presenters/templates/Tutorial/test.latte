@@ -1,0 +1,41 @@
+
+{block myScripts}
+<script src="{$basePath}/codemirror/lib/codemirror.js"></script>
+<script src="{$basePath}/codemirror/mode/javascript/javascript.js"></script>
+<script src="{$basePath}/codemirror/mode/xml/xml.js"></script>
+<script src="{$basePath}/codemirror/mode/css/css.js"></script>
+<script src="{$basePath}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="{$basePath}/js/front/tutorial.js"></script>
+{/block}
+
+{block myCss}
+    <link rel="stylesheet" href="{$basePath}/codemirror/theme/3024-day.css"> 
+    <link rel="stylesheet" href="{$basePath}/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="{$basePath}/css/content.css">
+{/block}
+
+{block title}
+    Editor
+{/block}
+
+{block content}
+{control breadcrumb}
+<div class="editor-help">
+{control helpControl}
+</div>
+<div class='wrapper'>
+    <div class='left input-part'>
+        <textarea id='area' class='editor'
+        >{$code}</textarea>       
+    </div>
+    <div class="small-width">
+         <input type='button' value='Vyzkoušet' class='button run'>
+    </div>
+    <div class="left frameWrapper">
+        <iframe id="frame">
+        </iframe>    
+    </div>
+     <div class="normal-width">
+         <input type='button' value='Vyzkoušet' class='button run'>
+     </div>
+</div>

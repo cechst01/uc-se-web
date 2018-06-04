@@ -1,0 +1,312 @@
+
+/*############### Tutorialy ###############*/
+.tutorials-table td:nth-of-type(2){
+   max-width: 225px;
+} 
+
+.tutorial-mce .mce-tinymce{
+    width: 100%;
+}    
+
+.tutorial-mce .mce-edit-area iframe{
+    min-height: 400px;
+} 
+
+/*############### Cvičení ###############*/
+    
+    .CodeMirror{
+        width: 100%;       
+        border: 1px solid whitesmoke;
+    }
+    
+    .editorWrapper{        
+        float: left;
+        margin: 10px 2% 10px 0;
+        width:31%;
+    }   
+   
+    /*
+    .selector, .property, .type{
+        margin-right: 10px;
+    }
+    
+    .selector , .property{        
+        width: 180px;
+        
+    }   
+        
+    .value, .message{      
+        width: 180px;
+    }
+    
+    */
+    
+    .tableConditions td{
+        width: 19%;
+        padding: 0 3px;
+    }
+    
+    .selector, .property, .type, .value, .message{
+        width: 99%;
+    }
+    .conditionsWrapper{
+        padding: 5px 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid whitesmoke;
+    }
+    
+    .tableConditions td{
+        
+        vertical-align: bottom;
+    }
+    
+    .tableConditions th{
+        
+        border-bottom: 1px solid whitesmoke;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+    .label{
+        display: none;
+    }   
+    
+    .cal{
+        display: inline-block;
+        margin-bottom: 0;
+    }
+    
+   
+    @media only screen and (max-width: 1199px) {
+     .tableConditions, .tableConditions thead, .tableConditions tbody, .tableConditions tfoot,
+     .tableConditions tr, .tableConditions td, .tableConditions th{
+         display: block;
+     }
+     
+    .tableConditions td{
+        width: 100%;
+        
+    }
+    .condition{
+        display: block;
+        padding: 2px 1%;
+    }
+    .condition:nth-of-type(2n){
+        background-color: #f7f7f7;
+    }    
+    .tableConditions td{        
+        display: block;       
+        margin-bottom: 8px;        
+    }    
+    .tableConditions th{
+       display: none;
+    }
+    .label{
+        display: block;
+        margin-bottom: 2px;
+    }
+    .selector, .property, .value, .type, .message{
+        box-sizing: border-box;        
+        width: 99%;        
+    }   
+    }
+
+
+/*############### Testy ###############*/
+
+.tests-table td:nth-of-type(2){
+    max-width: 225px;
+}
+
+.question{
+    margin: 10px 0;
+    padding: 10px 15px;
+    border: 1px solid #eee;
+    position: relative;
+}
+
+.question:nth-child(2n){
+    background-color: #f7f7f7;    
+}
+
+.questionWrapper{
+    /*padding: 5px 20px;
+    margin-bottom: 10px;        
+    border: 1px solid #eee;*/
+}
+
+.question input[type=file]{
+    margin-left: 5px;
+}
+
+.questionText{
+    width: 300px;
+    height: 100px;
+    margin: 0 5px;
+}
+
+.remove-question, .remove-section{   
+    position: absolute;
+    margin: 0px;
+    top: 1px;    
+    right: 1px;
+    border-radius: 0px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.answerText{
+    width: 300px;
+    height: 100px;
+    margin-right: 5px;
+}
+
+.answers{
+    margin-left: 20px;  
+    padding: 10px;
+}
+
+.answers h3{
+    margin: 8px 0 6px 0;
+}
+
+.answer{
+    margin-bottom: 3px;
+}
+
+.questionFile{
+
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+
+/*############### Sekce ###############*/
+
+.admin-section{
+    padding: 5px;
+    border: 1px solid #eee;
+    margin: 5px;
+    position: relative;
+}
+
+.admin-section:nth-of-type(2n){
+    background-color: #f7f7f7;        
+}
+
+/*############### Menu ###############*/
+
+/*administrace menu */
+.parent{
+   margin: 0px 0px 0px 45px;
+   min-width: 800px;
+ }
+ 
+.parent input, .parent button{
+   margin: 2px 4px 2px 0;
+}
+
+.top-parent{
+   border: 1px solid #eee;
+   padding: 10px;
+   margin-bottom: 15px;
+   margin-left: 0;
+}
+
+.top-parent:nth-of-type(2n){
+   background-color: #f7f7f7;
+}
+
+ /*############### Menu v administraci ###############*/
+.items-category{
+    padding: 15px;
+    border: 1px solid #424242;
+    /*margin-bottom: 5px;*/
+    border-bottom:none;
+    border-top: none;
+}
+
+.items-category:nth-of-type(1){
+   border-top: 1px solid #424242;
+}
+
+.items-category:last-of-type{
+   border-bottom: 1px solid #424242;
+}
+
+.items-category h2{
+    margin-bottom: 10px;
+}
+
+.admin-menu-item{
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 4px;
+    width: 30%;
+    min-width: 200px;
+    background-color: #6DA0F7;
+    color: #fff;
+    font-size: 17px;
+}
+
+.admin-menu-item a{
+    display: inline-block;
+    width: 100%;
+}
+
+.items-category:hover{
+    background-color: #f7f7f7;
+}
+.items-category.no-hover:hover{
+    background-color: #fff;
+}
+
+/*############### Nápověda ###############*/
+  .help-item{
+      padding: 4px 5px;
+  }
+  .help-item a:hover{
+      color: #6DA0F7;
+  }
+  
+help-table table{
+    width: 60%;
+}
+
+.mce-tinymce{
+    width: 100%;
+}
+    .mce-edit-area iframe{
+    min-height: 200px;
+}
+
+ /*############### Flexibilní ###############*/
+ 
+@media only screen and (max-width: 660px) {
+    /* menu v administraci */
+    .admin-menu-item{
+        width: 100%;
+        min-height: 30px;
+    }
+    .items-category{
+        padding-left: 3px;
+    }
+    
+    .editorWrapper{
+        width: 100%;
+    }
+    .CodeMirror{
+        width: 100%;
+    }
+    
+    .answers{
+        margin-left: 0px;
+    }
+    
+    .question input[type=text], .question textarea{        
+        width: 100%;
+    }
+}
+ 
+
+

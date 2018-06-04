@@ -1,0 +1,16 @@
+<nav class="breadcrumb">
+    <ul>
+        {foreach $links as $link}
+            {sep}
+                <li>                   
+                    <a href="{$link[1]}" title="{$link[2]}">{$link[0]}</a>                     
+                </li>
+            {/sep}
+            {last}
+                <li>
+                <span title="{$link[2]}">{$link[0]}</span>
+                </li>
+            {/last}
+        {/foreach}
+    </ul>
+</nav>

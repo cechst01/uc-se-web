@@ -1,0 +1,33 @@
+
+{block menu}
+    {foreach $categories as $item => $category}
+    {if $category['subcategories'] }
+        <li class="category"><span>{$category['category']['name']|firstUpper} </span><i class="fa fa-angle-down"></i>
+            <ul class="subcategories">
+                {include menu, categories => $category['subcategories']}
+            </ul>
+        </li>
+    {else}
+        <li  class='category'> 
+            {if $category['category']['url'] !== ''}
+                {ifset $menuArray[$category['category']['url']]}
+                    {var $url = $menuArray[$category['category']['url']]}
+                {else}
+                    {var $url = ''}
+                {/ifset}
+               {if strpos($category['category']['url'],'www') !== false}
+                   <a href="//{$category[category][url]|url}" target="_blank">
+                       {$category['category']['name']|firstUpper} <span class=" external-link fa fa-external-link"></span>
+                   </a>                      
+               {else}
+                 {if $url}  
+                 <a href="{plink $url}">{$category['category']['name']|firstUpper}</a> 
+                 {/if}
+               {/if}              
+            {else}
+            <a href="{plink :Front:Section:default $category['category']['categories_id']}">{$category['category']['name']|firstUpper}</a>
+            {/if}
+        </li>
+    {/if}
+    {/foreach}
+{/block}

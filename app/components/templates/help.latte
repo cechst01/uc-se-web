@@ -1,0 +1,9 @@
+{if isset($help) && $help}
+    <div class="help">
+        <span class='helpIco fa fa-question'></span>
+        <div class='hide help-text'>{$help->content|noescape}</div>
+    </div>
+{else}
+ 
+{/if}
+
