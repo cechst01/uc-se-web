@@ -10,6 +10,7 @@
     </a> 
 <table class="stripped-table">
     <tr>
+        <th></th>
         <th>
             <a href="{link sortCategories! 'name', $type}">Název</a>
             <span n:if="$sort == name" class="order {$order}"></span>
@@ -35,15 +36,17 @@
 
 
     <tr>    
-            <td>{input namesearch}</td>
-            <td>{input descriptsearch}</td>
-            <td></td>
-            <td></td>           
-            <td></td> 
-            <td>
-               <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-               <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
-            </td>                       
+        <td><input type="checkbox" class="check-all"></td>
+        <td>{input namesearch}</td>
+        <td>{input descriptsearch}</td>
+        <td></td>
+        <td></td>           
+        <td></td> 
+        <td>
+           <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+           <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+           <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
+        </td>                       
     </tr>
    
     <tbody n:snippet="categories"> 
@@ -62,6 +65,7 @@
        {/foreach}  
        
         <tr>
+            <td><input type="checkbox" name="deleted[]" value="{$category->forum_categories_id}"></td>
             <td>{$category->name}</td>
             <td>{$category->description}</td>
             <td>{$threadsCount}</td>

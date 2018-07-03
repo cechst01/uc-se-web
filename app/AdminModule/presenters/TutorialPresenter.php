@@ -64,6 +64,7 @@ class TutorialPresenter extends ContentPresenter
                    $this['tutorialForm']['sections_id']->setItems($sectionItems);
                    $this['tutorialForm']->setDefaults($tutorial);
                    $this->template->name = $tutorial['name'];
+                   $this->template->tutorialId = $tutorial['tutorials_id'];
 
                 }  
                 else{
@@ -111,6 +112,11 @@ class TutorialPresenter extends ContentPresenter
                 ->setAttribute('class',['input','description'])
                 ->addConditionOn($form['hidden'], Form::BLANK)
                    ->setRequired('Pokud neoznačíte tutoriál jako rozpracovaný, musíte vyplnit popis');
+        $form->addInteger('order_by','Pořadí v sekci:')
+                ->setAttribute('title','Podle pořadí se v dané sekci tutorialy seřadí.')
+                ->setDefaultValue(1)
+                ->addConditionOn($form['hidden'], Form::BLANK)
+                    ->setRequired('Pokud neoznačíte tutorial jako rozpracovaný, musíte vyplnit pořadí.');
         $form->addUpload('file','Obrázek tutoriálu:')    
                 ->setAttribute('accept','.jpg, .png, .gif, .jpeg')
                 ->addRule(Form::IMAGE,'Jsou povolené pouze obrázky ve formátech JPEG, PNG nebo GIF.')
@@ -121,9 +127,10 @@ class TutorialPresenter extends ContentPresenter
                 ->addConditionOn($form['hidden'], Form::BLANK)
                    ->setRequired('Pokud neoznačíte tutoriál jako rozpracovaný, musíte vyplnit obsah');
         $form->addSubmit('send','Uložit')
-              ->setAttribute('class',['button','save']);             
+              ->setAttribute('class',['button','save','scrollTop']);             
         $form->onValidate[] = [$this,'validateForm'];
         $form->onSuccess[] = [$this,'tutorialFormSucceeded'];
+        $form->onError[] = [$this,'tutorialFormError'];
 
         return $form;
     }
@@ -151,9 +158,19 @@ class TutorialPresenter extends ContentPresenter
         unset($data['category'],$data['send'],$data['_do'],$data['_token_']);                      
         $authorId = $this->user->getId();
         $id = $this->tutorialManager->saveTutorial($data,$authorId);
-        $this->flashMessage('Tutoriál, byl úspěšně uložen','success');     
-        $this->redirect(':Front:Tutorial:show',['tutorialId' => $id]);         
-    }                 
+        $this->template->tutorialId = $id;
+        $this->flashMessage('Tutoriál, byl úspěšně uložen','success');
+        $this->redrawControl('flashes');
+        $this->redrawControl('showTutorial');
+        $this->redrawControl('wrapper');
+        $this->redrawControl('hiddenId');
+        //$this->redirect(':Front:Tutorial:show',['tutorialId' => $id]);         
+    }     
+    
+    public function tutorialFormError($form){
+        $this->flashMessage(implode(' ',$form->errors),'error');
+        $this->redrawControl('flashes');
+    }
 
     public function handleCategoryChange($value){     
         $items = $this->sectionManager->getSections($value);

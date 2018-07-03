@@ -67,6 +67,14 @@ class UsersPresenter extends ManagePresenter{
 
     }
     
+    public function multipleDelete($deletedIds){
+        if($this->getUser()->isInRole('admin')){
+            $this->userManager->deleteUsers($deletedIds);
+            $this->flashMessage('Uživatelé byly úspěšně smazáni.','success');
+            $this->redirect('this');
+        }
+    }
+    
     public function handleSortUsers($orderColumn,$orderType){           
         
         $users = $this->sort($this->userManager, $orderColumn,$orderType);

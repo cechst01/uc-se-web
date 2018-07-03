@@ -74,6 +74,14 @@ class CommentsPresenter extends ManagePresenter{
         
         return $form;
     }
+    
+    public function multipleDelete($deletedIds){
+        if($this->getUser()->isInRole('admin')){
+            $this->commentManager->deleteComments($deletedIds);
+            $this->flashMessage('Komentáře byly úspěšně smazány.','success');
+            $this->redirect('this');
+        }
+    }
       
     public function handleDeleteComment($commentId){
         $comment = $this->commentManager->getComment($commentId);

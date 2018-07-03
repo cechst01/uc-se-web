@@ -32,9 +32,9 @@ class Template8f0a743879 extends Latte\Runtime\Template
 	function prepare()
 	{
 		extract($this->params);
-		if (isset($this->params['key'])) trigger_error('Variable $key overwritten in foreach on line 48');
-		if (isset($this->params['role'])) trigger_error('Variable $role overwritten in foreach on line 48');
-		if (isset($this->params['myuser'])) trigger_error('Variable $myuser overwritten in foreach on line 37');
+		if (isset($this->params['key'])) trigger_error('Variable $key overwritten in foreach on line 52');
+		if (isset($this->params['role'])) trigger_error('Variable $role overwritten in foreach on line 52');
+		if (isset($this->params['myuser'])) trigger_error('Variable $myuser overwritten in foreach on line 40');
 		Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);
 		
 	}
@@ -49,7 +49,7 @@ class Template8f0a743879 extends Latte\Runtime\Template
 		$this->renderBlock('title', get_defined_vars());
 		?><div id="<?php echo htmlSpecialChars($this->global->snippetDriver->getHtmlId('wrapper')) ?>"><?php $this->renderBlock('_wrapper', $this->params) ?></div><div class="paginationWrapper">
 <?php
-		/* line 87 */ $_tmp = $this->global->uiControl->getComponent("paginator");
+		/* line 91 */ $_tmp = $this->global->uiControl->getComponent("paginator");
 		if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(NULL, FALSE);
 		$_tmp->render();
 ?>
@@ -91,11 +91,12 @@ class Template8f0a743879 extends Latte\Runtime\Template
     <div class="admin-table-wrapper">
         <table class="stripped-table">
             <tr>
+                <th></th>
                 <th>
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortUsers!", ['username', $type])) ?>" class="order-link">Uživatelské jméno</a>
 <?php
 		if ($sort == 'username') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 12 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 13 */ ?>"></span>
 <?php
 		}
 ?>
@@ -104,7 +105,7 @@ class Template8f0a743879 extends Latte\Runtime\Template
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortUsers!", ['email', $type])) ?>">Email</a>
 <?php
 		if ($sort == 'email') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 16 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 17 */ ?>"></span>
 <?php
 		}
 ?>
@@ -116,14 +117,16 @@ class Template8f0a743879 extends Latte\Runtime\Template
             </tr>
 
             <tr>
-                <td><?php echo end($this->global->formsStack)["namesearch"]->getControl() /* line 25 */ ?></td>
-                <td><?php echo end($this->global->formsStack)["emailsearch"]->getControl() /* line 26 */ ?></td>
-                <td><?php echo end($this->global->formsStack)["role"]->getControl() /* line 27 */ ?></td>
-                <td><?php echo end($this->global->formsStack)["lock"]->getControl() /* line 28 */ ?></td>
+                <td><input type="checkbox" class="check-all"></td>
+                <td><?php echo end($this->global->formsStack)["namesearch"]->getControl() /* line 27 */ ?></td>
+                <td><?php echo end($this->global->formsStack)["emailsearch"]->getControl() /* line 28 */ ?></td>
+                <td><?php echo end($this->global->formsStack)["role"]->getControl() /* line 29 */ ?></td>
+                <td><?php echo end($this->global->formsStack)["lock"]->getControl() /* line 30 */ ?></td>
                 <td></td>
                 <td>
-                <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
                 <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("removeFilter!")) ?>" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                <button type="submit" class="ico-button large confirm-all" title="Filtrovat"><span class="fa fa-trash"></span></button>
                 </td>   
             </tr>
 
@@ -151,17 +154,18 @@ class Template8f0a743879 extends Latte\Runtime\Template
 		foreach ($users as $myuser) {
 ?>
 
-                <tr>        
-                    <td><?php echo LR\Filters::escapeHtmlText($myuser->username) /* line 39 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText($myuser->email) /* line 40 */ ?></td>            
+                <tr>
+                    <td><input type="checkbox" name="deleted[]" value="<?php echo LR\Filters::escapeHtmlAttr($myuser->users_id) /* line 42 */ ?>"></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($myuser->username) /* line 43 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($myuser->email) /* line 44 */ ?></td>            
                     <td<?php echo ' id="' . htmlSpecialChars($this->global->snippetDriver->getHtmlId($myuser->users_id)) . '"' ?>><?php
 			$this->global->snippetDriver->enter($myuser->users_id, "dynamic");
-			echo LR\Filters::escapeHtmlText($myuser->user_role->view_name) /* line 41 */ ?> <?php
+			echo LR\Filters::escapeHtmlText($myuser->user_role->view_name) /* line 45 */ ?> <?php
 			$this->global->snippetDriver->leave();
 ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->bool, $myuser->locked, 'Zamčeno', 'Odemčeno')) /* line 42 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->bool, $myuser->locked, 'Zamčeno', 'Odemčeno')) /* line 46 */ ?></td>
                     <td>                
-                        <select class='changeRole' data-id="<?php echo LR\Filters::escapeHtmlAttr($myuser->users_id) /* line 44 */ ?>"
+                        <select class='changeRole' data-id="<?php echo LR\Filters::escapeHtmlAttr($myuser->users_id) /* line 48 */ ?>"
 <?php
 			if ($user->id == $myuser->users_id) {
 ?>
@@ -172,7 +176,7 @@ class Template8f0a743879 extends Latte\Runtime\Template
 <?php
 			$iterations = 0;
 			foreach ($roles as $key => $role) {
-				?>                                <option value="<?php echo LR\Filters::escapeHtmlAttr($key) /* line 49 */ ?>"
+				?>                                <option value="<?php echo LR\Filters::escapeHtmlAttr($key) /* line 53 */ ?>"
 <?php
 				if ($myuser->user_role_id == $key) {
 ?>
@@ -180,7 +184,7 @@ class Template8f0a743879 extends Latte\Runtime\Template
                                     <?php
 				}
 ?>>
-                                    <?php echo LR\Filters::escapeHtmlText($role) /* line 53 */ ?>
+                                    <?php echo LR\Filters::escapeHtmlText($role) /* line 57 */ ?>
 
                                 </option>
 <?php
@@ -200,14 +204,14 @@ class Template8f0a743879 extends Latte\Runtime\Template
 				$text ='Odemčít';
 			}
 			if ($user->id == $myuser->users_id) {
-				?>                        <div class="ico-button-disabled"><span class="fa <?php echo LR\Filters::escapeHtmlAttr($class) /* line 67 */ ?>"></span></div>
+				?>                        <div class="ico-button-disabled"><span class="fa <?php echo LR\Filters::escapeHtmlAttr($class) /* line 71 */ ?>"></span></div>
                         <div class="ico-button-disabled"><span class="fa fa-trash-o"></span></div>
 <?php
 			}
 			else {
 				?>                        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("toggleLock!", [$myuser->users_id])) ?>" class="ico-button" title="<?php
-				echo LR\Filters::escapeHtmlAttr($text) /* line 70 */ ?> účet">
-                            <span class="fa <?php echo LR\Filters::escapeHtmlAttr($class) /* line 71 */ ?>"></span>
+				echo LR\Filters::escapeHtmlAttr($text) /* line 74 */ ?> účet">
+                            <span class="fa <?php echo LR\Filters::escapeHtmlAttr($class) /* line 75 */ ?>"></span>
                     </a>  
                         <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteUser!", [$myuser->users_id])) ?>" class="confirm ico-button" title="Smazat uživatele">
                             <span class="fa fa-trash-o"></span>

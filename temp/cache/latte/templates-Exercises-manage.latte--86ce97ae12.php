@@ -30,7 +30,7 @@ class Template86ce97ae12 extends Latte\Runtime\Template
 	function prepare()
 	{
 		extract($this->params);
-		if (isset($this->params['exercise'])) trigger_error('Variable $exercise overwritten in foreach on line 47');
+		if (isset($this->params['exercise'])) trigger_error('Variable $exercise overwritten in foreach on line 49');
 		Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);
 		
 	}
@@ -52,11 +52,12 @@ class Template86ce97ae12 extends Latte\Runtime\Template
     <div class="admin-table-wrapper">
         <table class="stripped-table">
             <tr>
+                <th></th>
                 <th>
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortExercises!", ['name', $type])) ?>">Název</a>
 <?php
 		if ($sort == 'name') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 12 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 13 */ ?>"></span>
 <?php
 		}
 ?>
@@ -65,7 +66,7 @@ class Template86ce97ae12 extends Latte\Runtime\Template
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortExercises!", ['users.username', $type])) ?>">Autor</a>
 <?php
 		if ($sort == 'users.username') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 16 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($order) /* line 17 */ ?>"></span>
 <?php
 		}
 ?>
@@ -76,7 +77,7 @@ class Template86ce97ae12 extends Latte\Runtime\Template
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortExercises!", ['created_at', $type])) ?>">Přidáno</a>
 <?php
 		if ($sort == 'created_at') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($orderNumber) /* line 22 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($orderNumber) /* line 23 */ ?>"></span>
 <?php
 		}
 ?>
@@ -85,7 +86,7 @@ class Template86ce97ae12 extends Latte\Runtime\Template
                     <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("sortExercises!", ['changed_at', $type])) ?>">Změněno</a>
 <?php
 		if ($sort == 'changed_at') {
-			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($orderNumber) /* line 26 */ ?>"></span>
+			?>                    <span class="order <?php echo LR\Filters::escapeHtmlAttr($orderNumber) /* line 27 */ ?>"></span>
 <?php
 		}
 ?>
@@ -94,17 +95,18 @@ class Template86ce97ae12 extends Latte\Runtime\Template
                 <th>Akce</th>
             </tr>
             <tr>  
-
-                    <td><?php echo end($this->global->formsStack)["namesearch"]->getControl() /* line 33 */ ?></td>
-                    <td><?php echo end($this->global->formsStack)["authorsearch"]->getControl() /* line 34 */ ?></td>
-                    <td><?php echo end($this->global->formsStack)["categorySelect"]->getControl() /* line 35 */ ?></td>
-                    <td><?php echo end($this->global->formsStack)["sectionSelect"]->getControl() /* line 36 */ ?></td>
+                    <td><input type="checkbox" class="check-all"></td>
+                    <td><?php echo end($this->global->formsStack)["namesearch"]->getControl() /* line 34 */ ?></td>
+                    <td><?php echo end($this->global->formsStack)["authorsearch"]->getControl() /* line 35 */ ?></td>
+                    <td><?php echo end($this->global->formsStack)["categorySelect"]->getControl() /* line 36 */ ?></td>
+                    <td><?php echo end($this->global->formsStack)["sectionSelect"]->getControl() /* line 37 */ ?></td>
                     <td></td>
                     <td></td>
-                    <td><?php echo end($this->global->formsStack)["hiddenselect"]->getControl() /* line 39 */ ?></td>
+                    <td><?php echo end($this->global->formsStack)["hiddenselect"]->getControl() /* line 40 */ ?></td>
                     <td>
-                     <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-                    <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("removeFilter!")) ?>" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                        <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("removeFilter!")) ?>" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                        <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                     </td>            
             </tr>  
 
@@ -119,7 +121,7 @@ class Template86ce97ae12 extends Latte\Runtime\Template
 
 <div class="paginationWrapper">
 <?php
-		/* line 74 */ $_tmp = $this->global->uiControl->getComponent("paginator");
+		/* line 77 */ $_tmp = $this->global->uiControl->getComponent("paginator");
 		if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(NULL, FALSE);
 		$_tmp->render();
 ?>
@@ -146,13 +148,14 @@ class Template86ce97ae12 extends Latte\Runtime\Template
 ?>
 
                 <tr>
-                    <td><?php echo LR\Filters::escapeHtmlText($exercise->name) /* line 49 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText($exercise->users->username) /* line 50 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText($exercise->sections->category->name) /* line 51 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText($exercise->sections->name) /* line 52 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->date, $exercise->created_at, 'd-m-Y')) /* line 53 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->date, $exercise->changed_at, 'd-m-Y')) /* line 54 */ ?></td>
-                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->bool, $exercise->hidden, 'Rozpracované', 'Dokončené')) /* line 55 */ ?></td>
+                    <td><input type="checkbox" name="deleted[]" value="<?php echo LR\Filters::escapeHtmlAttr($exercise->exercises_id) /* line 51 */ ?>"></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($exercise->name) /* line 52 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($exercise->users->username) /* line 53 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($exercise->sections->category->name) /* line 54 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText($exercise->sections->name) /* line 55 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->date, $exercise->created_at, 'd-m-Y')) /* line 56 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->date, $exercise->changed_at, 'd-m-Y')) /* line 57 */ ?></td>
+                    <td><?php echo LR\Filters::escapeHtmlText(call_user_func($this->filters->bool, $exercise->hidden, 'Rozpracované', 'Dokončené')) /* line 58 */ ?></td>
                     <td>
                         <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link(":Front:Exercise:Show", [$exercise->exercises_id])) ?>" class="ico-button" title="Zobrazit">
                             <span class="fa fa-eye"></span>

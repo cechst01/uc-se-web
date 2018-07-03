@@ -66,6 +66,7 @@ class ExercisePresenter extends ContentPresenter
                     $this['exerciseForm']['sections_id']->setItems($sectionItems);                
                     $this['exerciseForm']->setDefaults($exercise);
                     $this->template->name = $exercise['name'];
+                    $this->template->exerciseId = $exercise['exercises_id'];
                     
                     if($conditions){
                         $this['exerciseForm']['selector']->setValue($conditions[0]['selector']);
@@ -123,7 +124,7 @@ class ExercisePresenter extends ContentPresenter
         $form->addTextArea('description','Popis:')
                 ->setAttribute('class','input')
                 ->addConditionOn($form['hidden'], Form::BLANK)
-                    ->setRequired('Pokud neoznačíte cvičení jako rozpracované, musíte vyplnit zadání');
+                    ->setRequired('Pokud neoznačíte cvičení jako rozpracované, musíte vyplnit popis');
         $form->addTextArea('task','Zadání cvičení:')
                 ->setAttribute('class',['input','task'])
                 ->addConditionOn($form['hidden'], Form::BLANK)
@@ -132,6 +133,13 @@ class ExercisePresenter extends ContentPresenter
                 ->setRequired('Musíte zadat počet bodů')   
                 ->setDefaultValue(0)
                 ->addRule(Form::RANGE, "Počet bodů musí být v rozmezí %d-%d",[0,10]);
+        $form->addInteger('order_by','Pořadí v sekci:')
+                ->setAttribute('title','Podle pořadí se v dané sekci cvičení seřadí.')
+                ->setDefaultValue(1)
+                ->addConditionOn($form['hidden'], Form::BLANK)
+                    ->setRequired('Pokud neoznačíte cvičení jako rozpracované, musíte vyplnit pořadí.');
+        $form->addCheckbox('disable_css','Vypnout CSS')
+                ->setAttribute('title','Před kontrolou cvičení bude vypnuto CSS. Zvolte v případě že chcete, aby byly uznány jen styly nastavené JavaScriptem.');
         $form->addUpload('file','Obrázek u cvičení:')
                 ->setAttribute('class','input')
                 ->setAttribute('accept','.jpg, .png, .gif, .jpeg')
@@ -139,7 +147,7 @@ class ExercisePresenter extends ContentPresenter
                 ->addRule(Form::MAX_FILE_SIZE, "Maximální velikost souboru je $maxFileSize kB.", $maxFileSize * 1024)
                 ->setRequired(FALSE);
         $form->addTextArea('html_code','HTML kód cvičení')
-                ->setAttribute('class',['editor','input'])
+                ->setAttribute('class',['editor','input','html-editor'])
                 ->addConditionOn($form['hidden'], Form::BLANK)
                     ->setRequired('Pokud neoznačíte cvičení jako rozpracované, musíte vyplnit HTML kód');
         $form->addTextArea('css_code','Css kód cvičení')
@@ -168,14 +176,15 @@ class ExercisePresenter extends ContentPresenter
         $form->addButton('remove','Odebrat')
                 ->setAttribute('class',['remove', 'smallButton']);
         $form->addSubmit('send','Uložit')              
-              ->setAttribute('class',['button']); 
+              ->setAttribute('class',['button','scrollTop']);        
         $form->onValidate[] = [$this,'validateForm'];
         $form->onSuccess[] = [$this,'exerciseFormSucceeded'];
+        $form->onError[] = [$this, 'exerciseFormError'];
         
         return $form;
     }
     
-    public function validateForm($form){      
+    public function validateForm($form){        
         $data = $form->getHttpData();        
         $this->validateExercise($data, $form); 
         $this->validateSectionId($data, $form);
@@ -212,21 +221,32 @@ class ExercisePresenter extends ContentPresenter
                    $form->addError("Vlastnost $condition[property] není podporována.") ;
                 }
              }
-         } 
+         }        
      }
-     
+               
     
-    public function exerciseFormSucceeded($form){  
+    public function exerciseFormSucceeded($form){ 
         
        $user = $this->getUser();
        $usersId = $user->getId();  
        $data = $form->getHttpData();       
        unset($data['category'],$data['send'],$data['_do'],$data['_token_']);       
-       $id = $this->exerciseManager->saveExercise($data,$usersId);
-       $this->flashMessage('Cvičení, bylo úspěšně uloženo','success');
-       $this->redirect(':Front:Exercise:show',['exerciseId' => $id]);
-             
+       $id = $this->exerciseManager->saveExercise($data,$usersId); 
+       $this->template->exerciseId = $id;
+       $this->flashMessage('Cvičení, bylo úspěšně uloženo','success');          
+       $this->redrawControl('flashes');
+       $this->redrawControl('showExercise');      
+       $this->redrawControl('wrapper');
+       $this->redrawControl('hiddenId');
+       //$this->redirect(':Front:Exercise:show',['exerciseId' => $id]);             
     }
+    
+    public function exerciseFormError($form){
+       $this->flashMessage(implode(' ',$form->errors),'error');          
+       $this->redrawControl('flashes');
+    }
+    
+    
     
      public function handleCategoryChange($value){
             

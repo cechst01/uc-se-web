@@ -6,7 +6,8 @@
 {form postsFilterForm}
 <div class="admin-table-wrapper code-wrapper" data-url="{link :Front:Tutorial:test}">
     <table class="stripped-table">
-        <tr>       
+        <tr>
+            <th></th>
             <th>
                 <a href="{link sortPosts! 'users.username', $type, $threadId}">Autor</a>
                 <span n:if="$sort == 'users.username'" class="order {$order}"></span>
@@ -25,20 +26,23 @@
             </th>
             <th>Akce</th>
         </tr>
-        <tr>    
+        <tr>                    
+                <td><input type="checkbox" class="check-all"></td>
                 <td>{input authorsearch}</td>
                 <td>{input contentsearch}</td>
                 <td></td>
                 <td></td>          
                 <td>
-                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-                        <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                    <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                 </td>                       
         </tr>
 
         <tbody n:snippet="posts"> 
         {foreach $posts as $post}   
             <tr>
+                <td><input type="checkbox" name="deleted[]" value="{$post->post_id}"></td>
                 <td>{$post->users->username}</td>
                 <td>{$post->content|noescape}</td>           
                 <td>{$post->created_at|date:'d.m.Y H:i:s'}</td>

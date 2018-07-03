@@ -22,7 +22,8 @@ class TestManager extends BaseManager
             COLUMN_POINTS = 'points',
             COLUMN_CREATED = 'created_at',
             COLUMN_CHANGED = 'changed_at',
-            COLUMN_HIDDEN = 'hidden';                    
+            COLUMN_HIDDEN = 'hidden',
+            COLUMN_ORDER = 'order_by';
 
     const DELETE_PICTURE = 0;
     
@@ -138,6 +139,22 @@ class TestManager extends BaseManager
          $this->questionManager->deleteQuestions($testId);
          $this->answerManager->deleteAnswers($testId);
     }
+    
+    public function deleteTests($deletedIds){
+       $this->database->table(self::TABLE_TEST)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds)
+                ->delete();
+    }
+    
+    public function getForeignDeletedIds($deletedIds,$userId){
+        $ids = $this->database->table(self::TABLE_TEST)
+                ->select(self::COLUMN_USER_ID)
+                ->where(self::COLUMN_ID. ' IN ', $deletedIds)
+                ->where(self::COLUMN_USER_ID . ' != ' . $userId)
+                ->fetchAll();
+        
+        return $ids;        
+    }
        
     
     public function getTests($sectionId){
@@ -145,7 +162,7 @@ class TestManager extends BaseManager
        return $this->database->table(self::TABLE_TEST)
                ->where(self::COLUMN_SECTION,$sectionId)
                ->where(self::COLUMN_HIDDEN,0)
-               ->order(self::COLUMN_CREATED);
+               ->order(self::COLUMN_ORDER);
     }    
    
     public function getTest($testId){

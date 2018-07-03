@@ -41,6 +41,12 @@ class ThreadManager extends BaseManager{
                 ->delete();
     }
     
+    public function deleteThreads($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds )
+                ->delete();        
+    }
+    
     public function toogleLock($threadId){
         
         $thread = $this->getThread($threadId);

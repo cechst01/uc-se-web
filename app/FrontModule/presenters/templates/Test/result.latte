@@ -36,22 +36,23 @@
         {/if}
 
         {foreach $question['answers'] as $answer}
+           {var test = "<pre>{$answer[0]['text']}</pre>"}
             <div class="answer">
             {if $markedAnswers[$upper-1][$iterator->counter -1]}               
                 {$letters[$iterator->counter-1].') '}
-                <input type='checkbox' name="{$upper-1}-{$iterator->counter}" checked='true'>
+                <input type='checkbox' name="{$upper-1}-{$iterator->counter}" checked>
                 {if $rightAnswers[$upper-1][$iterator->counter -1]}
-                    <b class="green">{$answer['text']}  (tvoje správná odpověď)</b>   
+                    <b n:tag-if="!$answer[1]" class="green"><pre n:tag-if="$answer[1]" class="green bold">{$answer[0]['text']}</pre></b>  <b class="green">(tvoje správná odpověď)</b>   
                 {else}
-                    <b class="red">{$answer['text']}  (tvoje  špatná odpověď)</b>  
+                    <b n:tag-if="!$answer[1]" class="red"><pre n:tag-if="$answer[1]" class="red bold">{$answer[0]['text']}</pre></b>   <b class="red">(tvoje  špatná odpověď)</b>
                 {/if}
             {else}               
                 {$letters[$iterator->counter-1].') '}
                 <input type='checkbox' name="{$upper-1}-{$iterator->counter}">
                 {if $rightAnswers[$upper-1][$iterator->counter -1]}
-                    <span class="gree">{$answer['text']}</span> (správná odpověď)
+                    <span n:tag-if="!$answer[1]" class="gray"><pre n:tag-if="$answer[1]" class="gray">{$answer[0]['text']}</pre> <span class="gray">(správná odpověď)</span></span>
                 {else}
-                    {$answer['text']}
+                    <pre n:tag-if="$answer[1]">{$answer[0]['text']}</pre>
                 {/if}         
             {/if}
             </div>

@@ -33,6 +33,12 @@ class ForumManager extends BaseManager{
                 ->delete();
     }
     
+    public function deleteCategories($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds)
+                ->delete();
+    }
+    
     public function getCategory($categoryId){        
         
         $category =  $this->database->table(self::TABLE_NAME)

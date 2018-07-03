@@ -20,11 +20,7 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WWW/web-portal-slozeny/www/css/content.css</file>
-            <file>file:/D:/WWW/web-portal-slozeny/app/FrontModule/presenters/templates/rank/show.latte</file>
-            <file>file:/D:/WWW/web-portal-slozeny/app/FrontModule/presenters/ProfilePresenter.php</file>
-            <file>file:/D:/WWW/web-portal-slozeny/app/FrontModule/presenters/RankPresenter.php</file>
-            <file>file:/D:/WWW/web-portal-slozeny/app/FrontModule/presenters/templates/Profile/show.latte</file>
+            <file>file:/D:/WWW/web-portal-slozeny/app/AdminModule/presenters/templates/Exercise/manage.latte</file>
         </group>
     </open-files>
 </project-private>

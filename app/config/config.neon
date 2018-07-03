@@ -18,6 +18,10 @@ parameters:
     questionImageSize: [500,300]
     # maximalni velikost obrazku u otazek testu
     questionMaxFileSize: 512
+    # nastaveni rozmeru obrazku u cviceni - sirka x vyska
+    exerciseImageSize: [500,300]
+    # maximalni velikost obrazku u cviceni
+    exerciseMaxFileSize: 512
     # minimalni delka hesla
     passwordLength: 7
     # doba za kterou je mozna znovu zkusit jiz napsany test -  ve dnech
@@ -53,7 +57,7 @@ services:
     - App\Model\AnswerManager
     - App\Model\ResultManager(%testRewrite%)
     - App\Model\ProfileManager
-    - App\Model\PictureManager(%maxFileSize%,%imageSize%,%questionImageSize%,%questionMaxFileSize%)
+    - App\Model\PictureManager(%maxFileSize%,%imageSize%,%questionImageSize%,%questionMaxFileSize%,%exerciseImageSize%,%exerciseMaxFileSize%)
     - App\Model\CommentManager
     - App\Model\ThreadManager
     - App\Model\PostManager   

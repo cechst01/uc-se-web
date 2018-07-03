@@ -21,43 +21,56 @@
 {control breadcrumb}
 {control helpControl}
 {ifset $name}
-    <h2>Úprava cvičení: {$name}</h2>
+    <h2 class="left">Úprava cvičení: {$name}</h2>
 {else}
-    <h2>Vložení cvičení</h2>
+    <h2 class="left">Vložení cvičení</h2>
 {/ifset}
-{snippetArea wrapper}
-{form exerciseForm}
-     <ul class="form-error" n:if="$form->hasErrors()">
-        <li n:foreach="$form->errors as $error">{$error}</li>
-    </ul>
+
+<div n:snippet="showExercise" class="right">
+    {ifset $exerciseId}
+        <a n:href=":Front:Exercise:show, $exerciseId" class="show-ico" target="_blank"><span class="fa fa-eye"></span></a>
+    {/ifset}
+</div>
+   
+{snippetArea wrapper}    
+{form exerciseForm, class => [ajax, clear]}    
+        
     <div class="itemInfosection">
         <table>
             <tr>
-                <td>{label category/}</td>
+                <td>{label category}</td>
                 <td>{input category}</td>
             </tr>
             <tr>
-                <td>{label sections_id /}</td>
+                <td>{label sections_id}</td>
                 <td>{snippet form}{input sections_id}{/snippet}</td>
             </tr>
             <tr>
-                <td>{label name /}</td>
+                <td>{label name}</td>
                 <td>{input name}</td>
             </tr>
             <tr>
-                <td>{label hidden /}</td>
+                <td>{label hidden}</td>
                 <td>{input hidden}</td>
             </tr>
             <tr>
-                <td>{label description /}</td>
+                <td>{label description}</td>
                 <td>{input description}</td>
             </tr>
             <tr>
-                <td>{label task /}</td>
+                <td>{label task}</td>
                 <td>{input task}</td>
             </tr>
             <tr>
-                <td>{label points /}</td>
+                <td>{label disable_css}</td>
+                <td>{input disable_css}</td>   
+            </tr>
+             <tr>
+                <td>{label order_by}</td>
+                <td>{input order_by}</td>
+            </tr>
+            <tr>
+                <td>{label points}</td>
                 <td>{input points}</td>
             </tr>
             <tr>
@@ -66,40 +79,40 @@
             </tr>
             
             <tr>
-                <td>{label file /} </td>
+                <td>{label file} </td>
                 <td>{input file}</td>
             </tr>
         </table>
     </div>       
       <div class="editorWrapper">
-      {label html_code /}      
+      {label html_code}      
       <br>
       {input html_code}
       </div>
       <div class="editorWrapper">
-      {label css_code /} 
+      {label css_code} 
       <br>
       {input css_code}
       </div>
       <div class="editorWrapper">
-      {label js_code /} 
+      {label js_code} 
       <br>
       {input js_code}
       </div>    
      <div class="conditionsWrapper clear">      
         <table class='tableConditions'>              
-             <tr>              
-                <th> Selektor: </th>
-                <th> Zkontroluj jestli: </th>
-                <th> Jaký atribut/vlastnost: </th>   
-                <th> Kontrolovaná hodnota: </th>
-                <th> Chybová zpráva: </th>
+             <tr>
+                <th id="th-check-type"> Zkontroluj jestli: </th>
+                <th id="th-selector"> Selektor: </th>                
+                <th id="th-property"> Jaký atribut/vlastnost: </th>   
+                <th id="th-value"> Kontrolovaná hodnota: </th>
+                <th id="th-error-message"> Chybová zpráva: </th>
              </tr>
 
              <tr id="firstCondition" class="condition">
-
-                 <td><div class="label"> {label selector}</div>{input selector}</td>
+                 
                 <td><div class="label">{label type}</div>{input type}</td>  
+                <td><div class="label"> {label selector}</div>{input selector}</td>                
                 <td><div class="label">{label property}</div>{input property}</td>             
                 <td><div class="label">{label value}</div>{input value}</td>
                 <td><div class="label">{label message}</div>{input message}</td>
@@ -113,8 +126,7 @@
               {foreach $conditions as $condition}                  
                   {var $i = $iterator->counter}
                   {var $name = 'conditions['.$i.']'}
-                 <tr class='condition'>
-                     <td><input type="textbox" name='{$name.'[selector]'}' value='{$condition['selector']}' class="selector"></td> 
+                 <tr class='condition'>                     
                      <td><select name='{$name.'[type]'}' class="type">
                          {foreach $types as $type}
                            <option value="{$iterator->counter-1}"{if $condition[type] == $iterator->counter-1}
@@ -124,7 +136,8 @@
                            </option>
                          {/foreach} 
                          </select>
-                     </td> 
+                     </td>
+                     <td><input type="textbox" name='{$name.'[selector]'}' value='{$condition['selector']}' class="selector"></td> 
                      <td><input type="textbox" name='{$name.'[property]'}' 
                                 {if $condition['property']}
                                     value='{$condition['property']}'
@@ -145,11 +158,19 @@
              
           </table>
         </div>  
-        {input send}
+        {input send} 
+        
+        {snippet hiddenId}
+            {ifset $exerciseId}     
+                {input exercises_id, value => $exerciseId}
+            {else}
+                {input exercises_id}
+            {/ifset}
+        {/snippet}
 
 {/form}
-  
-{/snippetArea wrapper}
+    
+  {/snippetArea wrapper}
 
 {include jsCallback,input => category, link => categoryChange}
 

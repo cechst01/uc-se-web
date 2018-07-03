@@ -85,7 +85,8 @@ class LevelPresenter extends BasePresenter{
         $data = $form->getHttpData();
         unset($data['_token_'],$data['_do'],$data['send']);
         $this->levelManager->saveLevels($data);
-        $this->userManager->updateAllLevels();       
+        $this->userManager->updateAllLevels();
+        //$this->redirect('this');
     }
     
     

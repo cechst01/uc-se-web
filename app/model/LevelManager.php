@@ -57,7 +57,13 @@ class LevelManager extends BaseManager{
                 return $id;
             }            
         }
-        return array_values($pointsArray)[0];
+        if(isset(array_values($pointsArray)[0])){
+           return array_values($pointsArray)[0]; 
+        }
+        else{
+            return [];
+        }
+        
     }
     
     private function getLevelPoints(){

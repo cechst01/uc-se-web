@@ -96,6 +96,14 @@ class PostsPresenter extends ManagePresenter{
         return $form;
     }
     
+    public function multipleDelete($deletedIds){
+        if($this->getUser()->isInRole('admin')){
+            $this->postManager->deletePosts($deletedIds);
+            $this->flashMessage('Příspěvky byly úspěšně smazány.','success');
+            $this->redirect('this');
+        }
+    }
+    
     public function handleRemoveFilter($threadId){
        
         $posts = $this->removeFilter($this->postManager,$threadId);

@@ -67,9 +67,17 @@ class ManagePresenter extends BasePresenter{
         return  $items->fetchAll();
     }
     
-    public function filterSucceeded($form, $values){    
-        $this->filter = array_filter((array) $values, function ($s) {return ($s === "" || $s === NULL || $s === [] ? FALSE : TRUE);});
-        $this->redirect("this");   
+    public function filterSucceeded($form, $values){        
+        $deleted = $form->getHttpData($form::DATA_TEXT, 'deleted[]'); 
+        
+        if($deleted){
+            $this->multipleDelete($deleted);
+        }
+        else{
+            $this->filter = array_filter((array) $values, function ($s) {return ($s === "" || $s === NULL || $s === [] ? FALSE : TRUE);});
+            $this->redirect("this");    
+        }
+         
     }
     
     protected function createComponentPaginator(){

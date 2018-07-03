@@ -81,6 +81,14 @@ class ThreadsPresenter extends ManagePresenter{
 
         return $form;
     }
+    
+    public function multipleDelete($deletedIds){
+        if($this->getUser()->isInRole('admin')){
+            $this->threadManager->deleteThreads($deletedIds);
+            $this->flashMessage('Vlákna byla úspěšně smazána.','success');
+            $this->redirect('this');
+        }
+    }
 
      public function handleDeleteThread($threadId){
         $thread = $this->threadManager->getThread($threadId);        

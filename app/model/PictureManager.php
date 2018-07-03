@@ -12,13 +12,17 @@ class PictureManager{
     public $imageSize;
     public $questionImageSize;
     public $questionMaxFileSize;
+    public $exerciseImageSize;
+    public $exerciseMaxFileSize;
     
-    public function __construct($maxFile, $imgSize,$questionImgSize,$questionMax, Context $database) {
+    public function __construct($maxFile, $imgSize,$questionImgSize,$questionMax,$exerciseImgSize,$exerciseMax, Context $database) {
         $this->database = $database;
         $this->maxFileSize = $maxFile;
         $this->imageSize = $imgSize; 
         $this->questionImageSize = $questionImgSize;   
         $this->questionMaxFileSize = $questionMax;
+        $this->exerciseImageSize = $exerciseImgSize;   
+        $this->exerciseMaxFileSize = $exerciseMax;
     }
     
     const TABLE_NAME = 'pictures',
@@ -102,7 +106,9 @@ class PictureManager{
     public function saveExercisePicture($file){
         if($this->checkImg($file)){
            $this->deleteUnusedPicture(self::EXERCISE_PATH);
-           return $this->save($file,self::EXERCISE_PATH,self::EXERCISE_ALT);
+           $width = $this->exerciseImageSize[0];
+           $height = $this->exerciseImageSize[1];
+           return $this->save($file,self::EXERCISE_PATH,self::EXERCISE_ALT,$width,$height);
         }
     }
     public function saveTestPicture($file){

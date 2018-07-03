@@ -69,7 +69,16 @@ class ExercisesPresenter extends ManagePresenter{
         $form->onSuccess[] = [$this,'filterSucceeded'];
 
         return $form;
-    }   
+    }
+    
+    public function multipleDelete($deletedIds){
+        $user = $this->getUser();
+        if($user->isInRole('admin') || !$this->exerciseManager->getForeignDeletedIds($deletedIds, $user->id)){
+           $this->exerciseManager->deleteExercises($deletedIds); 
+           $this->flashMessage('Cvičení byla úspěšně smazána.','success');
+           $this->redirect('this');
+        }        
+    }
     
     public function handleDeleteExercise($exerciseId){    
        $exercise = $this->exerciseManager->getExercise($exerciseId)[0];

@@ -7,6 +7,17 @@
     text-align: center;
 }
 
+.edit-ico{
+    font-size: 30px;
+    color: #ccc;
+    display: inline-block;
+    margin-top: 16px;
+}
+
+.edit-ico:hover{
+    color: #3d81f5;   
+}
+
 
 
 /*############### Skece ###############*/
@@ -91,6 +102,11 @@
 /*############### Tutorial ###############*/
 
 /* Zobrazení*/
+
+.tutorial-header{
+    
+    margin-bottom: 30px;
+}
 
 .toggle-comments{
     display: inline-block;
@@ -255,7 +271,16 @@
     margin-bottom: 4px;
 }
 
+.question pre {
+    margin: 5px 0 0 20px;    
+}
+
+.answer{
+    margin-bottom: 5px;
+}
+
 /* Výsledek */
+
 
 .green{
    color: #68ed63;
@@ -263,6 +288,14 @@
 
 .red{
    color: #ff6666;
+}
+
+.gray{
+    color: #424242;
+}
+
+.bold{
+    font-weight: 400;
 }
 
 .result{

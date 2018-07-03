@@ -24,7 +24,7 @@ $(function(){
         
         var points = $('<input type="number">');
             points.attr('name','level['+lastId + '][max_points]');
-            points.attr('data-nette-rules','[{"op":":filled","msg":"Vypln to"},{"op":":integer","msg":"Please enter a valid integer."},{"op":":min","msg":"Musí být větší než 0","arg":1}]');
+            points.attr('data-nette-rules','[{"op":":filled","msg":"Musíte vyplnit maximální počet bodů úrovně"},{"op":":integer","msg":"Zadejte platné celé číslo."},{"op":":min","msg":"Musí být větší než 0","arg":1}]');
         var pointsLabel = $('<label>Limit bodů:</label>');
         
         var removeButton = $('<button class="ico-button" type="button"><span class="fa fa-trash-o"></span></button>');

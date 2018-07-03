@@ -22,7 +22,9 @@ class ExerciseManager extends BaseManager
             COLUMN_CHANGED = 'changed_at',
             COLUMN_HIDDEN = 'hidden',
             COLUMN_AUTHOR = 'users_id',          
-            COLUMN_POINTS = 'points';
+            COLUMN_POINTS = 'points',
+            COLUMN_ORDER = 'order_by',
+            COLUMN_DISABLE_CSS = 'disable_css';
     
     const DELETE_PICTURE = -5; 
     
@@ -31,9 +33,13 @@ class ExerciseManager extends BaseManager
                        2 => 'Má zadaná Css vlastnost danou hodnotu?',
                        3 => 'Má zadaný atribut danou hodnotu?',
                        4 => 'Je vnitřní HTML rovno zadanému?',
-                       5 => 'Obsahuje prvek daný text?'];
+                       5 => 'Obsahuje prvek daný text?',
+                       6 => 'Obsahuje prvek daný prvek?',
+                       7 => 'Vrátí funkce danou hodnotu?'];
     
-    public $allowedProperties = ['background-color','border-bottom-color','border-bottom-style',
+    public $allowedProperties = ['background-color', 'border-color','border-style','border-width',
+                                 'border-radius','margin','padding',
+                                 'border-bottom-color','border-bottom-style',
                                  'border-bottom-width','border-left-color','border-left-style',
                                  'border-left-width','border-right-color','border-right-style',
                                  'border-right-width','border-top-color','border-top-style',
@@ -61,7 +67,7 @@ class ExerciseManager extends BaseManager
                         . self::COLUMN_PICTURE . ', ' . self::COLUMN_DESCRIPTION)
                 ->where(self::COLUMN_SECTION,$sectionId)
                 ->where(self::COLUMN_HIDDEN,0)
-                ->order(self::COLUMN_CREATED);
+                ->order(self::COLUMN_ORDER);
      
     }
     
@@ -70,14 +76,16 @@ class ExerciseManager extends BaseManager
         $exercise = $this->database->table(self::TABLE_NAME)
                     ->where(self::COLUMN_ID,$exerciseId)
                     ->fetch();
-        $conditions = $this->conditionManager->getConditions($exerciseId);
+        
+        $conditions = $this->conditionManager->getConditions($exerciseId);        
         
         $fromZero = [];
 
         foreach($conditions as $condition){
            
             array_push($fromZero,$condition);
-        }      
+        }       
+      
         return [$exercise, $fromZero];
     }
     
@@ -85,11 +93,12 @@ class ExerciseManager extends BaseManager
     {  
        $data[self::COLUMN_AUTHOR] = $usersId;
        $data[self::COLUMN_HIDDEN] = isset($data[self::COLUMN_HIDDEN]);
+       $data[self::COLUMN_DISABLE_CSS] = isset($data[self::COLUMN_DISABLE_CSS]);
        //vytazeni podminek z prijatych dat
        $conditions =  $this->conditionManager->filtreConditions($data['conditions']);       
        unset($data['conditions']);
        // naplneni sloupce check kontrolni funkci
-       $data[self::COLUMN_CHECK] = $this->createCheckFunction($conditions);
+       $data[self::COLUMN_CHECK] = $this->createCheckFunction($conditions,$data[self::COLUMN_DISABLE_CSS]);
        
        //pokud prijde v datech id cviceni, upravuju, jinak upravuju
         if($data['exercises_id']){
@@ -139,13 +148,20 @@ class ExerciseManager extends BaseManager
         return $row->getPrimary();
     }
        
-    public function createCheckFunction($conditions){
+    public function createCheckFunction($conditions,$disableCss){
         if(!empty($conditions)){
+            
             define('FUNCTION_HEAD', "function check()");
             define('FUNCTION_BODY',"{var frame = document.querySelector('#frame');"
                   . "var frameDocument = frame.contentWindow.document;"
                   . "var resultArray = [];"
                   . "var result = '';");
+            if($disableCss){
+                define('DISABLE_CSS'," disableCSS();");
+            }
+            else{
+                define('DISABLE_CSS',"");
+            }
             define('FUNCTION_BODY_END',"for(var i=0; i<resultArray.length; i++)"
                     ."{result = result + resultArray[i] + '\\n';}".
                     "if(result == ''){result = 'Správně.'}"
@@ -163,38 +179,45 @@ class ExerciseManager extends BaseManager
 
 
             foreach ($conditions as $condition){
-              $selector = str_replace('"','',$condition['selector']);             
-              $value = trim(preg_replace('/\s\s+/', '', $condition['value']));
+              $selector = str_replace('"',"'",$condition['selector']);             
+              //$value = trim(preg_replace('/\s\s+/', '', $condition['value']));             
+              $value = trim($condition['value']);
               $value =  str_replace('"',"'", $value);
+              $values = explode(" ",$value);              
               $message = str_replace('"', "'", $condition['message']);
               
-              
+               $newValue = "";
+               foreach($values as $index => $value){                   
                 if(isset($condition['property'])){
                     $containsColor = strpos($condition['property'],'color');                    
                     if($condition['type'] == 2 && ($containsColor || $containsColor === 0)){
-                      $value  = $this->convertColor($condition['value']); 
+                      $value  = $this->convertColor($value); 
                       
                     }                    
-                }                   
-                    
+                }
+                
+                $newValue = ($newValue == "" )? $value : ($newValue . ' ' . $value); 
+               
+               }                 
                     
                 if(isset($condition['property'])){ 
                   $property = str_replace('"','',$condition['property']);
                   $argumentString = '('.'"'. $selector.'"' . ',' .'"'. $property
-                          .'"'. ',' .'"'. $value .'"'.','.'"'.$message.'"'.','.'frameDocument' .')';                   
+                          .'"'. ',' .'"'. $newValue .'"'.','.'"'.$message.'"'.','.'frameDocument' .')';                   
                 }
                 else{
                   
-                  $argumentString ='('.'"'. $selector.'"' . ',' .'"'. $value.'"'.','.'"'.$message.'"'
+                  $argumentString ='('.'"'. $selector.'"' . ',' .'"'. $newValue.'"'.','.'"'.$message.'"'
                           .','.'frameDocument'.')';
                 }
 
-                $code .= 'resultArray = resultArray.concat(functionArray['.$condition['type'].']'.$argumentString .')'. ';';
+                //$code .= 'resultArray = resultArray.concat(functionArray['.$condition['type'].']'.$argumentString .')'. ';';
+                $code .= 'resultArray = merge_array( resultArray, functionArray['.$condition['type'].']'.$argumentString .')'. ';';
 
 
             }
 
-            return FUNCTION_HEAD . FUNCTION_BODY . $code . FUNCTION_BODY_END;        
+            return FUNCTION_HEAD . FUNCTION_BODY . DISABLE_CSS . $code . FUNCTION_BODY_END;        
         }else{
             return '';
         }
@@ -213,13 +236,13 @@ class ExerciseManager extends BaseManager
          $r = hexdec(substr($colorValue,1,1).substr($colorValue,1,1));
          $g = hexdec(substr($colorValue,2,1).substr($colorValue,2,1));
          $b = hexdec(substr($colorValue,3,1).substr($colorValue,3,1));
-         $color="rgb($r, $g, $b)";  
+         $color="rgb($r,$g,$b)";  
         }
         else{
          $r = hexdec(substr($colorValue,1,2));
          $g = hexdec(substr($colorValue,3,2));
          $b = hexdec(substr($colorValue,5,2));
-         $color="rgb($r, $g, $b)";
+         $color="rgb($r,$g,$b)";
      
         }
        
@@ -228,11 +251,12 @@ class ExerciseManager extends BaseManager
     
     private function convertColorRgb($colorValue){
         $trim = str_replace(' ', '',$colorValue);
-        $color = str_replace(',',', ',$trim);               
+        $color = str_replace(',',',',$trim);               
         return $color;
         
     }
     
+   
     public function getFiltreItems($parameters,$userId = false){
         $exercises = $this->database->table(self::TABLE_NAME);
         
@@ -281,6 +305,22 @@ class ExerciseManager extends BaseManager
         $pictureId = $exercise[self::COLUMN_PICTURE];
         $row->delete();
         $this->pictureManager->deletePicture($pictureId);          
+    }
+    
+    public function deleteExercises($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds)
+                ->delete();
+    }
+    
+    public function getForeignDeletedIds($deletedIds,$userId){
+        $ids = $this->database->table(self::TABLE_NAME)
+                ->select(self::COLUMN_AUTHOR)
+                ->where(self::COLUMN_ID. ' IN ', $deletedIds)
+                ->where(self::COLUMN_AUTHOR . ' != ' . $userId)
+                ->fetchAll();
+        
+        return $ids;        
     }
     
     public function deletePicture($exerciseId){

@@ -21,10 +21,19 @@
 {control breadcrumb}
 {control helpControl}
 
-<h2>{$exercise->name}</h2>
-<div id="task"> 
+<h2 class="left">{$exercise->name}</h2>
+{if $user->isInRole('admin') || $user->isInRole('editor')}
+    <a n:href=":Admin:Exercise:manage, $exercise->exercises_id" class="edit-ico right" target="_blank" title="Upravit cvičení.">
+        <span class="fa fa-pencil"></span>
+    </a>
+{/if}
+  
+<div id="task" class="clear"> 
     <h3> Zadání: </h3>
 <p>{$exercise->task}</p>
+</div>
+<div>
+    <img src="{$basePath}/{$exercise->ref(pictures,pictures_id)->url}">
 </div>
 
 <div class='exercise-input-part left'>

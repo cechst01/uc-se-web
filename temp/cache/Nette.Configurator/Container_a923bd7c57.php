@@ -746,6 +746,8 @@ class Container_a923bd7c57 extends Nette\DI\Container
 			'imageSize' => [160, 160],
 			'questionImageSize' => [500, 300],
 			'questionMaxFileSize' => 512,
+			'exerciseImageSize' => [500, 300],
+			'exerciseMaxFileSize' => 512,
 			'passwordLength' => 7,
 			'testRewrite' => 90,
 			'tokenValidity' => 1,
@@ -891,7 +893,8 @@ class Container_a923bd7c57 extends Nette\DI\Container
 
 	public function createService__46_App_Model_PictureManager(): App\Model\PictureManager
 	{
-		$service = new App\Model\PictureManager(256, [160, 160], [500, 300], 512, $this->getService('database.default.context'));
+		$service = new App\Model\PictureManager(256, [160, 160], [500, 300], 512, [500, 300],
+			512, $this->getService('database.default.context'));
 		return $service;
 	}
 

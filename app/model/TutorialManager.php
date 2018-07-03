@@ -17,7 +17,8 @@ class TutorialManager extends BaseManager
             COLUMN_CREATED = 'created_at',
             COLUMN_CHANGED = 'changed_at',
             COLUMN_HIDDEN = 'hidden',
-            COLUMN_AUTHOR = 'users_id';         
+            COLUMN_AUTHOR = 'users_id',
+            COLUMN_ORDER = 'order_by';
     
     
     const DELETE_PICTURE = -2;
@@ -87,16 +88,17 @@ class TutorialManager extends BaseManager
                 //->select(self::COLUMN_ID,self::COLUMN_NAME,self::COLUMN_DESRIPTION)
                 ->where(self::COLUMN_SECTION_ID,$sectionId)
                 ->where(self::COLUMN_HIDDEN,0)
-                ->order(self::COLUMN_CREATED);
+                ->order(self::COLUMN_ORDER);
     }
     
-    public function getFiltreItems($parameters,$userId=false){
+    public function getFiltreItems($parameters,$userId=false){        
+           
         
         $tutorials = $this->database->table(self::TABLE_NAME);
         
             if($userId){
                 $tutorials->where(self::COLUMN_AUTHOR,$userId);
-            }
+            }                        
         
             if(empty($parameters)){
                 return $tutorials;
@@ -153,6 +155,22 @@ class TutorialManager extends BaseManager
         $row->delete();
         $this->pictureManager->deletePicture($pictureId);
                     
+    }
+    
+    public function deleteTutorials($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds)
+                ->delete();
+    }
+    
+    public function getForeignDeletedIds($deletedIds,$userId){
+      $ids = $this->database->table(self::TABLE_NAME)
+              ->select(self::COLUMN_AUTHOR)
+              ->where(self::COLUMN_ID. ' IN ', $deletedIds)
+              ->where(self::COLUMN_AUTHOR . ' != ' . $userId)
+              ->fetchAll();
+
+      return $ids;        
     }
     
     public function getTutorialsSections(){

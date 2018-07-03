@@ -25,7 +25,7 @@ class ConditionManager extends BaseManager{
     public function getConditions($exerciseId){
         return $this->database->table(self::TABLE_NAME)
                            ->where(self::COLUMN_EXERCISE_ID,$exerciseId)
-                           ->order(self::COLUMN_PROPERTY. ' , ' .self::COLUMN_ID)
+                           ->order(self::COLUMN_ID . ', ' . self::COLUMN_PROPERTY)
                            ->fetchAll();
     }
     

@@ -68,12 +68,22 @@ class TutorialsPresenter extends ManagePresenter{
         $form->addText('authorsearch');
         $form->addSelect('categorySelect','',$categories);
         $form->addSelect('sectionSelect','',$sections);
-        $form->addSelect('hiddenSelect','',[ 3 =>'Všechny', 0 => 'Dokončené', 1=>'Rozpracované']);       
+        $form->addSelect('hiddenSelect','',[ 3 =>'Všechny', 0 => 'Dokončené', 1=>'Rozpracované']);        
         $form->onSuccess[] = [$this,'filterSucceeded'];
+        
 
         return $form;
-    }
+    } 
     
+    public function multipleDelete($deletedIds){        
+        $user = $this->getUser();
+        if($user->isInRole('admin') || !$this->tutorialManager->getForeignDeletedIds($deletedIds, $user->id)){
+           $this->tutorialManager->deleteTutorials($deletedIds);
+           $this->flashMessage('Tutorialy byly úspěšně smazány.','success');
+           $this->redirect('this');
+        }        
+    }
+       
     public function handleSortTutorials($orderColumn, $orderType){    
       
         $tutorials = $this->sort($this->tutorialManager, $orderColumn, $orderType);
@@ -98,9 +108,9 @@ class TutorialsPresenter extends ManagePresenter{
         $message = "Tutoriál $name byl úspěšně smazán.";
         $this->flashMessage($message,'success');
         $this->redirect('this');
-    }
+    }    
     
-     public function handleRemoveFilter(){
+    public function handleRemoveFilter(){
        
         $tutorials = $this->removeFilter($this->tutorialManager);
                

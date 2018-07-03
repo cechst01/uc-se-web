@@ -11,42 +11,48 @@
 {control breadcrumb}
 {control helpControl}
 {ifset $name}
-    <h2>Úprava tutorialu: {$name}</h2>
+    <h2 class="left">Úprava tutorialu: {$name}</h2>
 {else}
-    <h2>Vložení tutorialu</h2>
+    <h2 class="left">Vložení tutorialu</h2>
 {/ifset}
+<div n:snippet="showTutorial" class="right">
+    {ifset $tutorialId}
+        <a n:href=":Front:Tutorial:show, $tutorialId" class="show-ico" target="_blank"><span class="fa fa-eye"></span></a>
+    {/ifset}
+</div>
 {snippetArea wrapper}
-{form tutorialForm}
-    <ul class="form-error" n:if="$form->hasErrors()">
-        <li n:foreach="$form->errors as $error">{$error}</li>
-    </ul>
+{form tutorialForm, class => ['ajax','clear']}    
      <div class="itemInfosection">
          <table>
              <tr>
                 <th><th>
              </tr>
              <tr>
-                 <td>{label category /}</td>
+                 <td>{label category}</td>
                  <td>{input category} </td>
              </tr>             
                 
             <tr>
-                <td>{label sections_id /}</td>
+                <td>{label sections_id}</td>
                 <td>{snippet form}{input sections_id}{/snippet} </td>
             </tr>
             
             <tr>
-                <td>{label name /}</td>
+                <td>{label name}</td>
                 <td>{input name}</td>
             </tr>
             
             <tr>
-                <td>{label hidden /}</td>
+                <td>{label hidden}</td>
                 <td>{input hidden}</td>
+            </tr>
+             <tr>
+                <td>{label order_by}</td>
+                <td>{input order_by}</td>
             </tr>
             
              <tr>
-                <td>{label description /}</td>
+                <td>{label description }</td>
                 <td>{input description}</td>
             </tr>            
             
@@ -56,7 +62,7 @@
             </tr>
             
             <tr>
-                <td>{label file /}</td>
+                <td>{label file}</td>
                 <td>{input file}</td>
             </tr>
      
@@ -67,6 +73,14 @@
       {input content}      
       {input send}
     </div>
+    
+    {snippet hiddenId}
+            {ifset $tutorialId}     
+                {input tutorials_id, value => $tutorialId}
+            {else}
+                {input tutorials_id}
+            {/ifset}
+    {/snippet}
 
 {/form}
 {/snippetArea wrapper}

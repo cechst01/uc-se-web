@@ -57,6 +57,12 @@ class CommentManager extends BaseManager{
                 ->delete();
     }
     
+    public function deleteComments($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ',$deletedIds)
+                ->delete();
+    }
+    
     public function getComment($commentId){
         return $this->database->table(self::TABLE_NAME)
                 ->where(self::COLUMN_ID,$commentId)

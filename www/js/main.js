@@ -40,13 +40,15 @@ function setDoctype(value,js){
     var trim = value.trim();  
     var withoutDoc = trim.replace(/<!doctype.*>/gi,'');
     var withoutHtml = withoutDoc.replace(/<html.*>/gi,'');
-    var clear = withoutHtml.replace(/<\/html.*>/gi,''); 
+    var withoutBody = withoutHtml.replace(/<body.*>/gi,'');
+    var withoutBodyEnd = withoutBody.replace(/<\/body.*>/gi,'');
+    var clear = withoutBodyEnd.replace(/<\/html.*>/gi,''); 
     var html;
     if(js){
         html = '<html>\n' +'<script>\n'+ clear +'\n</script>'+ '\n</html>'
     }
     else{
-        html = '<html>\n' + clear + '\n</html>';
+        html = '<html>\n' + '<body>\n' + clear + '\n</body>'+ '\n</html>';
     }
     
     var doctype = '<!DOCTYPE html>\n' + html;  
@@ -154,8 +156,14 @@ addCheckUpload();
 /* inicializace code mirroru */
 var editors = document.querySelectorAll('.editor');
 var delka = editors.length;
-for(var i =0; i<delka;i++){
+for(var i =0; i<delka;i++){    
     var item = editors[i];
+    var item = $(item);    
+    if(item.hasClass('html-editor')){
+      var val = item.val() == "" ? '<!DOCTYPE html>\n<html>\n<body> \n</body> \n</html>' : item.val();
+      item.val(val);  
+    }    
+    var item = item[0];
     var mode = item.dataset.mode ? item.dataset.mode : 'htmlmixed';    
     var myCodeMirror = CodeMirror.fromTextArea(item,
     { value: item.value, mode: mode,  lineNumbers: true, theme: '3024-day'});
@@ -170,8 +178,36 @@ $('.confirm').on('click', function(e){
     }
 });
 
+/* potvrzeni smazani */
+$('.confirm-all').on('click', function(e){ 
+  var choice = confirm('Opravdu si přejete tyto položky odstranit?');
+ 
+    if(!choice){
+        e.preventDefault();
+    }
+});
+
+/* vypnuti mazani tlacitkem pro filtrovani */
+$('.filter').on('click',function(e){
+    var form = $(this).closest('form');
+    var checkboxes = form.find('input[type="checkbox"]');
+    checkboxes.prop('checked',false);    
+});
+
 /* automaticke skryvani flash zprav */
 setTimeout(function(){ $(".flash").hide(); }, 8000);
+
+/* vysrolovani navrch stranky */
+
+$('.scrollTop').on('click',function(){
+     window.scroll(0,0);
+});
+
+$('.check-all').on('click',function(){   
+    var form = $(this).closest('form');
+    var checkboxes = form.find('input[type="checkbox"]');
+    checkboxes.prop('checked',this.checked);    
+});
 
 
 });

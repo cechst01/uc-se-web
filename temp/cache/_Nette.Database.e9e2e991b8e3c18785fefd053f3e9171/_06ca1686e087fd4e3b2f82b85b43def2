@@ -1,1 +1,1 @@
-<?php //netteCache[01]000070a:2:{s:4:"time";s:21:"0.41401900 1509021459";s:10:"serialized";b:1;}?>a:1:{s:11:"comments_id";b:1;}
+<?php //netteCache[01]000070a:2:{s:4:"time";s:21:"0.92509300 1530126953";s:10:"serialized";b:1;}?>a:5:{s:11:"comments_id";b:1;s:5:"users";b:0;s:8:"users_id";b:1;s:7:"content";b:1;s:10:"created_at";b:1;}

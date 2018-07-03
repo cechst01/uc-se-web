@@ -8,6 +8,9 @@
 <table class="stripped-table tutorials-table">
     <tr>
         <th>
+           
+        </th>
+        <th>
             <a href="{link sortTutorials! 'name', $type}">Název</a>
             <span n:if="$sort == name" class="order {$order}"></span>
         </th>
@@ -34,6 +37,8 @@
     </tr>
 
     <tr>    
+            
+            <td> <input type="checkbox" class="check-all"></td>
             <td>{input namesearch}</td>
             <td>{input descriptsearch}</td>
             <td>{input authorsearch}</td>
@@ -43,14 +48,16 @@
             <td></td>                 
             <td>{input hiddenSelect}</td>
             <td>
-                <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
                <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+               <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash-o"></span></button>
             </td>                       
     </tr>
    
     <tbody n:snippet="tutorials"> 
     {foreach $tutorials as $tutorial}   
         <tr>
+            <td><input type="checkbox"  name="deleted[]" value="{$tutorial->tutorials_id}"></td>
             <td>{$tutorial->name}</td>
             <td>{$tutorial->description}</td>
             <td>{$tutorial->users->username}</td>
@@ -82,3 +89,16 @@
 <div class="paginationWrapper">
 {control paginator}
 </div>
+
+{*
+<script>
+    
+    $.nette.ajax({
+       type: 'POST',
+       url: {link deleteTutorials!},
+       data: {
+            'account_id': id
+       }
+});
+</script>
+*}

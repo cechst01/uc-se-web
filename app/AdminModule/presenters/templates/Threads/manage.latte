@@ -11,6 +11,7 @@
     </a>
     <table class="stripped-table">
         <tr>
+            <th></th>
             <th>
                 <a href="{link sortThreads! 'name', $type, $categoryId}">Název</a>
                 <span n:if="$sort == name" class="order {$order}"></span>
@@ -31,14 +32,16 @@
             <th>Akce</th>
         </tr>
         <tr>    
+                <td><input type="checkbox" class="check-all"></td>
                 <td>{input namesearch}</td>
                 <td>{input authorsearch}</td>
                 <td></td>
                 <td></td>           
                 <td>{input lockedSelect}</td> 
                 <td>
-                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-                        <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                    <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                 </td>                       
         </tr>
 
@@ -48,6 +51,7 @@
             {var $postsCount = $posts->count()}
             {var $lastPost = $posts->max('created_at')}
             <tr>
+                <td><input type="checkbox" name="deleted[]" value="{$thread->threads_id}"></td>
                 <td>{$thread->name}</td>
                 <td>{$thread->users->username}</td>            
                 <td>{$postsCount}</td>

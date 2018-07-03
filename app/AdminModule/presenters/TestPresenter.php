@@ -68,6 +68,7 @@ class TestPresenter extends ContentPresenter
                     $this['testForm']->setDefaults($test);                    
                     $this->template->questions = $test['questions']; 
                     $this->template->name = $test['name'];                    
+                    $this->template->testId = $test['tests_id'];                    
                } 
                else{
                    $this->flashMessage('Zadaný test nemůžete upravovat. Nejste jeho autorem, ani nemáte administrátorská práva.','error');
@@ -121,11 +122,17 @@ class TestPresenter extends ContentPresenter
                 ->setRequired('Musíte zadat počet bodů')   
                 ->setDefaultValue(0)
                 ->addRule(Form::RANGE, "Počet bodů musí být v rozmezí %d-%d",[0,10]);
+        $form->addInteger('order_by','Pořadí v sekci:')
+                ->setAttribute('title','Podle pořadí se v dané sekci testy seřadí.')
+                ->setDefaultValue(1)
+                ->addConditionOn($form['hidden'], Form::BLANK)
+                    ->setRequired('Pokud neoznačíte test jako rozpracovaný, musíte vyplnit pořadí.');
         $form->addSubmit('send','Uložit')
              ->setAttribute('id','add')
-             ->setAttribute('class',['button']);
+             ->setAttribute('class',['button','scrollTop']);
         $form->onValidate[] = [$this,'validateForm'];
         $form->onSuccess[] = [$this,'testFormSucceeded'];
+        $form->onError[] = [$this,'testFormError'];
          
         return $form;
     }
@@ -202,9 +209,19 @@ class TestPresenter extends ContentPresenter
             
        $id =  $this->testManager->saveTest($data,$usersId);      
        $this->flashMessage('Test byl úspěšně uložen.','success');
-       $this->redirect(':Front:Test:show',['testId'=> $id]);  
+       $this->template->testId = $id;
+       $this->redrawControl('flashes');
+       $this->redrawControl('showTest');
+       $this->redrawControl('wrapper');
+       $this->redrawControl('hiddenId');
+       //$this->redirect(':Front:Test:show',['testId'=> $id]);  
       
     }  
+    
+    public function testFormError($form){
+        $this->flashMessage(implode(' ',$form->errors),'error');
+        $this->redrawControl('flashes');
+    }
     
     public function handleCategoryChange($value){
         $items = $this->sectionManager->getSections($value);

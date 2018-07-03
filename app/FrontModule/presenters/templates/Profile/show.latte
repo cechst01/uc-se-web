@@ -12,16 +12,18 @@
     
     <div class="left avatar-wrapper">
         <img src='{$basePath}/{$picture->url|nocheck}' class="profile-avatar" alt="{$picture->alt}">
-        <div class="level">           
-            <strong> Úroveň: </strong> {$level->name}
-        </div>
-        <div class="points-meter">
-            <meter value="{$profileUser->points}" min="0" max="{$level->max_points + 1}"> 
-            </meter>
-        </div>
-        <div class="points">
-            {$profileUser->points}/{$level->max_points + 1}
-        </div>
+        {ifset $level->name}
+            <div class="level">           
+                <strong> Úroveň: </strong> {$level->name}
+            </div>
+            <div class="points-meter">
+                <meter value="{$profileUser->points}" min="0" max="{$level->max_points + 1}"> 
+                </meter>
+            </div>
+            <div class="points">
+                {$profileUser->points}/{$level->max_points + 1}
+            </div>
+        {/ifset}
         <div>
             <strong>Pořadí: </strong> <a href="{link :Front:Rank:show}">{$rank}</a>
         </div>

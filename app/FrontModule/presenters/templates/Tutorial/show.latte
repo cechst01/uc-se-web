@@ -14,8 +14,13 @@
 {block content}
 {control breadcrumb}
 {control helpControl}
-<h2 class="content-header">{$tutorial->name}</h2>
-<div class="code-wrapper" data-url="{link :Front:Tutorial:test}">
+<h2 class="left tutorial-header">{$tutorial->name}</h2>
+{if $user->isInRole('admin') || $user->isInRole('editor')}
+    <a n:href=":Admin:Tutorial:manage, $tutorial->tutorials_id" class="edit-ico right" target="_blank" title="Upravit cvičení.">
+        <span class="fa fa-pencil"></span>
+    </a>
+{/if}
+<div class="code-wrapper clear" data-url="{link :Front:Tutorial:test}">
 {$tutorial->content|noescape}
 </div>
 

@@ -7,6 +7,7 @@
     <div class="admin-table-wrapper">
         <table class="stripped-table">
             <tr>
+                <th></th>
                 <th>
                     <a href="{link sortExercises! 'name', $type}">Název</a>
                     <span n:if="$sort == name" class="order {$order}"></span>
@@ -29,7 +30,7 @@
                 <th>Akce</th>
             </tr>
             <tr>  
-
+                    <td><input type="checkbox" class="check-all"></td>
                     <td>{input namesearch}</td>
                     <td>{input authorsearch}</td>
                     <td>{input categorySelect}</td>
@@ -38,14 +39,16 @@
                     <td></td>
                     <td>{input hiddenselect}</td>
                     <td>
-                     <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-                    <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                        <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                        <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                        <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                     </td>            
             </tr>  
 
         <tbody n:snippet="exercises">
             {foreach $exercises as $exercise}
                 <tr>
+                    <td><input type="checkbox" name="deleted[]" value="{$exercise->exercises_id}"></td>
                     <td>{$exercise->name}</td>
                     <td>{$exercise->users->username}</td>
                     <td>{$exercise->sections->category->name}</td>

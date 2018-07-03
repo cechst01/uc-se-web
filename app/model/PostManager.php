@@ -54,6 +54,12 @@ class PostManager extends BaseManager{
                 ->delete();
     }
     
+    public function deletePosts($deletedIds){
+        $this->database->table(self::TABLE_NAME)
+                ->where(self::COLUMN_ID . ' IN ', $deletedIds)
+                ->delete();
+    }
+    
     public function getPost($postId){
         
         return $this->database->table(self::TABLE_NAME)

@@ -270,6 +270,12 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
            $this->profileManager->deleteProfile($userId);           
         }
         
+        public function deleteUsers($deletedIds){
+            $this->database->table(self::TABLE_NAME)
+                    ->where(self::COLUMN_ID. ' IN ',$deletedIds)
+                    ->delete();
+        }
+        
         public function changeRole($userId,$roleId){
             
             $this->database->table(self::TABLE_NAME)
@@ -379,22 +385,30 @@ class UserManager extends BaseManager implements Nette\Security\IAuthenticator
         
         private function setLevel($userId,$points){
             $levelId = $this->levelManager->getLevelId($points);
-            $this->database->table(self::TABLE_NAME)
+            
+            if($levelId){
+                $this->database->table(self::TABLE_NAME)
                     ->where(self::COLUMN_ID,$userId)
                     ->update([self::COLUMN_LEVEL => $levelId]);
+            }            
         }
         
         public function updateAllLevels(){
             $users = $this->database->table(self::TABLE_NAME)
-                     ->fetchAll();
+                     ->fetchAll();            
             $saveArray = [];
             $updateArray = [];
+            
             foreach($users as $user){
                 $points = $user[self::COLUMN_POINTS];
+                $levelId = $this->levelManager->getLevelId($points);
                 $values = [self::COLUMN_ID => $user[self::COLUMN_ID],
-                           self::COLUMN_LEVEL => $this->levelManager->getLevelId($points)
+                           self::COLUMN_LEVEL => $levelId
                          ];
-                $saveArray[] = $values;
+                if($levelId){
+                  $saveArray[] = $values;  
+                }
+                
             }
             $key = self::COLUMN_LEVEL;
             $updateArray[$key] = new Nette\Database\SqlLiteral("VALUES($key)");

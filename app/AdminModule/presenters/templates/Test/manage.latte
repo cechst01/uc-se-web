@@ -10,15 +10,17 @@
 {control breadcrumb}
 {control helpControl}
 {ifset $name}
-    <h2>Úprava testu: {$name}</h2>
+    <h2 class="left">Úprava testu: {$name}</h2>
 {else}
-    <h2>Vložení testu</h2>
+    <h2 class="left">Vložení testu</h2>
 {/ifset}
+<div n:snippet="showTest" class="right">
+    {ifset $testId}
+        <a n:href=":Front:Test:show, $testId" class="show-ico" target="_blank"><span class="fa fa-eye"></span></a>
+    {/ifset}
+</div>
 {snippetArea wrapper}
-{form testForm}
-    <ul class="form-error" n:if="$form->hasErrors()">
-        <li n:foreach="$form->errors as $error">{$error}</li>
-    </ul>
+{form testForm class=> ['ajax','clear']}   
  <div class="itemInfosection" data-question-img-size="{$questionMaxFileSize}">
      <table>
          <tr>
@@ -36,6 +38,10 @@
           <tr>
              <td>{label hidden}</td>
              <td>{input hidden}</td>             
+         </tr>
+          <tr>
+             <td>{label order_by}</td>
+             <td>{input order_by}</td>             
          </tr>
           <tr>
              <td>{label points}</td>
@@ -98,7 +104,7 @@
                             {var $id = 'frm-testForm-questionns-' . $questionCounter . '-answers-' . ($iterator->counter - 1) . '-' }
                             <label class="answerlabel" for="{$id}text">{$letters[$iterator->counter - 1]}: </label>
                             <textarea type="text" name="{$name}[text]" id="{$id}text" title="Text odpovědi" class="answerText"
-                                      >{$answer[1].' ' .$answer[0]['text']}</textarea>
+                                      >{$answer[1].$answer[0]['text']}</textarea>
                             <input type="checkbox" name="{$name}[is_right]"{if $answer[0]['is_right']==1}checked="true"{/if}
                                    id="{$id}is_right" title="Označit odpověď jako správnou">
                             <label> Správná odpověď </label>
@@ -121,7 +127,14 @@
     <button type="button" id="btn" class='smallButton'><span class='fa fa-plus'> Přidat otázku</span></button>
     
   </div>  
-    {input send}    
+    {input send}   
+    {snippet hiddenId}
+            {ifset $testId}     
+                {input tests_id, value => $testId}
+            {else}
+                {input tests_id}
+            {/ifset}
+        {/snippet}
 {/form}
 {/snippetArea wrapper}
 

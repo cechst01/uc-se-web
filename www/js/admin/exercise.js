@@ -9,11 +9,14 @@ $(function(){
 
     addButton.on('click',function(){ addCondition($(this)); });        
     addButton.insertAfter(lastCondition);
-
-    $('.type').on('change',function(){ toogleDisable($(this)); });
+   
+    $(document).on('change','.type',function(){
+        toogleDisable($(this));
+        changeLabels($(this));
+    });
     changeNames();
     $('.remove').on('click',function(){ removeCondition($(this)); });
-    $('.property').on('keyup',checkCalculate);
+    //$('.property').on('keyup',checkCalculate);
     
     function getMaxId(){
       
@@ -69,7 +72,7 @@ $(function(){
 
         var propertyTd = $('<td></td>');
         var property = $("<input type='text' name='"+name+"[property]' disabled='' class='property'>");
-        property.on('keyup',checkCalculate);
+        //property.on('keyup',checkCalculate);
         property.val(propertyVal);
         if(notDisabled){
             property.removeAttr('disabled');
@@ -98,8 +101,8 @@ $(function(){
 
         var tr = $("<tr class='condition'></tr>");
 
-        selectorTd.appendTo(tr);
         typeTd.appendTo(tr);
+        selectorTd.appendTo(tr);        
         propertyTd.appendTo(tr);
         valueTd.appendTo(tr);
         messageTd.appendTo(tr);
@@ -152,21 +155,45 @@ $(function(){
       
         var value = select.val();
         var name = select.attr('name').replace('type','property');  
-        var property = $("input[name='" + name + "']");         
-      
-        switch(value){            
-            case '2':
-                property.removeAttr('disabled');            
-                break;
-            case '3':
-                property.removeAttr('disabled');
-                break;
-            default:
-                property.val('');
-                property.attr('disabled','disabled');     
+        var property = $("input[name='" + name + "']");
+        var enabledTypes = ['2','3','7'];
+        
+        if(enabledTypes.indexOf(value) != -1){
+           property.removeAttr('disabled'); 
         }
+        else{
+           property.val('');
+           property.attr('disabled','disabled');   
+        }     
     }
     
+    function changeLabels(select){
+        
+        var val = select.val();
+        var selectors = ['th-check-type','th-selector','th-property','th-value','th-error-message'];
+        var labels = [
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut/vlastnost:','Požadovaná třída:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut/vlastnost:','Požadovaný atribut:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaká vlastnost:','Požadovaná hodnota vlastnosti:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut:','Požadovaná hodnota atributu:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut/vlastnost:','Požadované HTML:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut/vlastnost:','Požadovaný text:','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Selektor:','Jaký atribut/vlastnost:','Požadovaný prvek (selektor):','Chybová zpráva:'],
+            ['Zkontroluj jestli:','Jméno funkce:','Argumenty funkce:','Požadovaná vrácená hodnota:','Chybová zpráva:'],
+        ];
+        
+        var values = labels[val];
+        var len = selectors.length;
+        
+        for(var i = 0; i < len; i++ ){            
+            var elem = $('#'+selectors[i]);
+            console.log(elem);
+            elem.html(values[i]);
+        }
+                
+    }
+    
+    /*
     function checkCalculate(){
         
         var calculateArray = ['border-width','border-style','border-color','margin','padding'];
@@ -190,6 +217,9 @@ $(function(){
         var parent = $(this).closest('.condition');
         var property = parent.find('.property');        
         var text = property.val().toLowerCase();
+        
+        
+        
         
         var borderArray = ['border-width','border-style','border-color'];
         var marginPaddingArray = ['margin','padding'];
@@ -260,7 +290,8 @@ $(function(){
         topCondition.insertAfter(parent);
         parent.remove();
     }
-    
+    */
+   
     function addCheckUpload()
     {    
        

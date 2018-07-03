@@ -70,13 +70,22 @@ class TestsPresenter extends ManagePresenter{
 
         return $form;
     }    
+    
+    public function multipleDelete($deletedIds){        
+        $user = $this->getUser();
+        if($user->isInRole('admin') || !$this->testManager->getForeignDeletedIds($deletedIds, $user->id)){
+           $this->testManager->deleteTests($deletedIds);
+           $this->flashMessage('Testy byly úspěšně smazány.','success');
+           $this->redirect('this');
+        }   
+        
+    }
 
     public function handleSortTests($orderColumn, $orderType){
       
         $tests = $this->sort($this->testManager, $orderColumn, $orderType);
  
-        $this->template->tests = $tests;
-   
+        $this->template->tests = $tests;   
     }    
     
     public function handleDeleteTest($testId){

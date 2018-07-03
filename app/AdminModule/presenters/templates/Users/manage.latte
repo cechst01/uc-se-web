@@ -7,6 +7,7 @@
     <div class="admin-table-wrapper">
         <table class="stripped-table">
             <tr>
+                <th></th>
                 <th>
                     <a href="{link sortUsers! 'username', $type}" class="order-link">Uživatelské jméno</a>
                     <span n:if="$sort == username" class="order {$order}"></span>
@@ -22,20 +23,23 @@
             </tr>
 
             <tr>
+                <td><input type="checkbox" class="check-all"></td>
                 <td>{input namesearch}</td>
                 <td>{input emailsearch}</td>
                 <td>{input role}</td>
                 <td>{input lock}</td>
                 <td></td>
                 <td>
-                <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
                 <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                <button type="submit" class="ico-button large confirm-all" title="Filtrovat"><span class="fa fa-trash"></span></button>
                 </td>   
             </tr>
 
             <tbody n:snippet="users">
             {foreach $users as $myuser}
-                <tr>        
+                <tr>
+                    <td><input type="checkbox" name="deleted[]" value="{$myuser->users_id}"></td>
                     <td>{$myuser->username}</td>
                     <td>{$myuser->email}</td>            
                     <td n:snippet="$myuser->users_id">{$myuser->user_role->view_name} </td>

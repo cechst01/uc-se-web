@@ -3,7 +3,8 @@
 {/block}
 
 {block content}
-{form levelForm}
+{form levelForm, class => ajax}
+    <h2>Administrace uživatelských úrovní</h2>
     <ul class="form-error" n:if="$form->hasErrors()">
         <li n:foreach="$form->errors as $error">{$error}</li>
     </ul>
@@ -14,12 +15,12 @@
                 data-nette-rules='[{"op":":filled","msg":"Musíte vyplnit název úrovně."}]'
         ><label>Limit bodů:</label
         ><input type="number" value="{$level->max_points}" name="level[{$id}][max_points]"
-                data-nette-rules='[{"op":":filled","msg":"Vypln to"},{"op":":integer","msg":"Please enter a valid integer."},
+                data-nette-rules='[{"op":":filled","msg":"Vypln to"},{"op":":integer","msg":"Zadejte platné celé číslo."},
                 {"op":":min","msg":"Musí být větší než 0","arg":1}]'
         ><button class="ico-button remove-level" type="button"><span class="fa fa-trash-o"></span></button>
     </div>   
     <div>
-        <button class="add-level" type="button">Přidat</button>
+        <button class="add-level smallButton ico-button" type="button">+</button>
     </div>
     {input send}
 {/form}

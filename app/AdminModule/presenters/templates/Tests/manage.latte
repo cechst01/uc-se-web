@@ -7,6 +7,7 @@
 <div class="admin-table-wrapper">
     <table class="stripped-table tests-table">
         <tr>
+            <th></th>
             <th>
                 <a href="{link sortTests! 'name', $type}">Název</a>
                 <span n:if="$sort == name" class="order {$order}"></span>
@@ -37,7 +38,8 @@
             <th>Akce</th>
         </tr>
 
-        <tr>        
+        <tr>    
+                <td><input type="checkbox" class="check-all"></td>
                 <td>{input namesearch}</td>
                 <td>{input descriptsearch}</td>
                 <td>{input authorsearch}</td>
@@ -48,14 +50,16 @@
                 <td>změněno</td>
                 <td>{input hiddenselect}</td>
                 <td>
-                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                    <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
                     <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                 </td>        
         </tr>
 
         <tbody n:snippet="tests">
             {foreach $tests as $test}
                 <tr>
+                    <td><input type="checkbox" value="{$test->tests_id}"></td>
                     <td>{$test->name}</td>
                     <td>{$test->description}</td>
                     <td>{$test->users->username}</td>

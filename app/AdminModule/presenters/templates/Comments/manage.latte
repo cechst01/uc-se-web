@@ -6,7 +6,8 @@
 {form commentsFiltreForm}
 <div class="admin-table-wrapper code-wrapper" data-url="{link :Front:Tutorial:test}">
     <table class="stripped-table">
-        <tr>        
+        <tr>   
+            <th></th>
             <th>
                 <a href="{link sortComments! 'users.username', $type, $tutorialId}">Autor</a>
                 <span n:if="$sort == 'users.username'" class="order {$order}"></span>
@@ -27,20 +28,22 @@
         </tr>
 
         <tr>
-            
+                <td><input type="checkbox" class="check-all"></td>
                 <td>{input authorsearch}</td>
                 <td>{input contentsearch}</td>                       
                 <td>Vytvořeno</td>
                 <td>Změněno</td>           
                 <td>                    
-                    <button type="submit" class="ico-button large" title="Filtrovat"><span class="fa fa-filter"></span></button>
-                <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large filter" title="Filtrovat"><span class="fa fa-filter"></span></button>
+                    <a href="{link removeFilter!}" class="ico-button large" title="Zrušit filtr"><span class="fa fa-times"></span></a>
+                    <button type="submit" class="ico-button large confirm-all" title="Smazat označené"><span class="fa fa-trash"></span></button>
                 </td>                           
         </tr>
 
         <tbody n:snippet="comments">
             {foreach $comments as $comment}
                 <tr>
+                    <td><input type="checkbox" name="deleted[]" value="{$comment->comments_id}"></td>
                     <td>{$comment->users->username}</td>
                     <td>{$comment->content|noescape}</td>           
                     <td>{$comment->created_at|date: 'd-m-Y H:i:s'}</td>

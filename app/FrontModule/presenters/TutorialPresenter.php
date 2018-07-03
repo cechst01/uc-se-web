@@ -95,7 +95,7 @@ class TutorialPresenter extends ContentPresenter
             $form = new Form();
             $form->addProtection();
             $form->addTextArea('content','Komentář:')                    
-                    ->setAttribute('id','commentArea')
+                    ->setAttribute('id','commentArea')                   
                     ->setRequired('Komentář nesmí být prázdný');
             $form->addHidden('comments_id');
             $form->addHidden('tutorial_id');

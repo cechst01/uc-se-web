@@ -79,8 +79,15 @@ class CategoriesPresenter extends ManagePresenter{
         
         $this->forumManager->saveCategory($values);
         $this->flashMessage('Kategorie byla úspěšně uložena.','success');
-        $this->redirect(":Admin:Categories:categoriesManage");
-        
+        $this->redirect(":Admin:Categories:categoriesManage");        
+    }
+    
+    public function multipleDelete($deletedIds){
+        if($this->getuser()->isInRole('admin')){
+            $this->forumManager->deleteCategories($deletedIds);
+            $this->flashMessage('Kategorie byly úspěšně smazány.','success');
+            $this->redirect('this');
+        }
     }
         
     public function actionCategoriesManage(){   

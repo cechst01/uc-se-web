@@ -10,8 +10,13 @@
 {var $letters = ['A','B','C','D','E','F','G','H'];}
 {control breadcrumb}
 {control helpControl}
-<h1>{$test['name']}</h1>
-{form resultForm}
+<h1 class="left">{$test['name']}</h1>
+{if $user->isInRole('admin') || $user->isInRole('editor')}
+    <a n:href=":Admin:Test:manage, $test['tests_id']" class="edit-ico right" target="_blank" title="Upravit cvičení.">
+        <span class="fa fa-pencil"></span>
+    </a>
+{/if}
+{form resultForm, class => clear}
     {foreach $test['questions'] as $question} 
         {var upper = $iterator->counter}
         <div class="question">
@@ -25,10 +30,9 @@
             {foreach $question['answers'] as $answer}     
                 <div class="answer">
                     {$letters[$iterator->counter-1].') '}
-                    <input type='checkbox' name="{$upper-1}-{$iterator->counter}">
-                    {dump $answer}
+                    <input type='checkbox' name="{$upper-1}-{$iterator->counter}">                   
                     {if $answer[1]}
-                        <pre>{$answer[0]['text']}</pre>   
+                        <pre>{$answer[0]['text']}</pre>
                     {else}
                         {$answer[0]['text']}  
                     {/if}

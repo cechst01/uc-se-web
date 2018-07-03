@@ -1,4 +1,16 @@
+/*############### Obecne ##################*/
 
+.show-ico{
+    font-size: 35px;
+    color: #ccc; 
+    display: inline-block;
+    margin-top: 14px;
+  
+}
+
+.show-ico:hover{
+    color: #3d81f5;
+}
 /*############### Tutorialy ###############*/
 .tutorials-table td:nth-of-type(2){
    max-width: 225px;
